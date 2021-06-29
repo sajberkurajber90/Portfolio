@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="./js/controller.js"></script>
+  </head>
+  <body>
+    <header class="header background--test">
+      <nav class="nav nav--primary">
+        <svg class="icon--back icon icon-1">
+          <use xlink:href="src/icons/sprite.svg#menu"></use>
+        </svg>
+        <ul class="list nav__list collapsible__content list--inline">
+          <li class="nav__item">Kontakt</li>
+          <li class="nav__item game--font">lonely Pong 19</li>
+          <li class="nav__item">WeatherApp</li>
+        </ul>
+      </nav>
+      <h1 class="header_heading">- Projects -</h1>
+      <div class="grid grid--1x2">
+        <div class="card grid grid--2x1 card-game">
+          <header class="card__header card--primary">
+            <h2 class="card__heading game--font">lonelypong19</h2>
+          </header>
+          <div class="card__body card--secondary">
+            <ul class="list card__list">
+              <li class="card__item">Single player game</li>
+              <li class="card__item">Writen in Vanila JS</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card grid grid--2x1 card-weahter">
+          <header class="card__header card--primary">
+            <h2 class="card__heading">WeatherApp</h2>
+          </header>
+          <div class="card__body card--secondary">
+            <ul class="list card__list">
+              <li class="card__item">Weahter displayed</li>
+              <li class="card__item">Leaflet</li>
+              <li class="card__item">Location using API</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+    <section class="section-game section-game--primary" id="#game">
+      <h1 class="section-game__heading">lonely Pong 19</h1>
+      <div class="section-game__display section-game__display--color">
+        <div class="section-game__bracket--left"></div>
+        <div class="section-game__v-line section-game--top"></div>
+        <div class="section-game__v-line section-game--bottom"></div>
+        <p class="game__message game--font">Insert coin</p>
+        <div class="section-game__ball"></div>
+        <div class="section-game__bracket--right"></div>
+        <audio
+          class="ready-to-fight"
+          src="./soundEffects/prepare-to-fight.mp3"
+        ></audio>
+      </div>
+      <div class="score-bar">
+        <div class="score-bar__disp section-game__display--color">
+          <p class="score-bar__msg game--font game--score-l">Score: 0</p>
+        </div>
+        <div class="btn-game btn-game--primary">
+          <p>Play</p>
+        </div>
+        <div class="score-bar__disp section-game__display--color">
+          <p class="score-bar__msg game--font game--score-r">Score: 0</p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
