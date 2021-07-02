@@ -11,17 +11,19 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
+
     <script defer src="./js/controller.js"></script>
   </head>
   <body>
+    <!-- Starting page -->
     <header class="header background--test">
       <nav class="nav nav--primary">
         <svg class="icon--back icon icon-1">
-          <use xlink:href="src/icons/sprite.svg#menu"></use>
+          <use xlink:href="./icons/sprite.svg#menu"></use>
         </svg>
         <ul class="list nav__list collapsible__content list--inline">
           <li class="nav__item">Kontakt</li>
-          <li class="nav__item game--font">lonely Pong 19</li>
+          <li class="nav__item">lonely Pong 19</li>
           <li class="nav__item">WeatherApp</li>
         </ul>
       </nav>
@@ -29,12 +31,12 @@
       <div class="grid grid--1x2">
         <div class="card grid grid--2x1 card-game">
           <header class="card__header card--primary">
-            <h2 class="card__heading game--font">lonelypong19</h2>
+            <h2 class="card__heading">Lonely Pong 19</h2>
           </header>
           <div class="card__body card--secondary">
             <ul class="list card__list">
               <li class="card__item">Single player game</li>
-              <li class="card__item">Writen in Vanila JS</li>
+              <li class="card__item">Writen in Vanilla JS</li>
             </ul>
           </div>
         </div>
@@ -52,8 +54,13 @@
         </div>
       </div>
     </header>
+    <!-- Game -->
     <section class="section-game section-game--primary" id="#game">
+      <div class="backdrop hidden"></div>
       <h1 class="section-game__heading">lonely Pong 19</h1>
+      <div class="section-game__msg-mobile game--font">
+        Insert Coin on screens greather than 768px
+      </div>
       <div class="section-game__display section-game__display--color">
         <div class="section-game__bracket--left"></div>
         <div class="section-game__v-line section-game--top"></div>
@@ -61,22 +68,52 @@
         <p class="game__message game--font">Insert coin</p>
         <div class="section-game__ball"></div>
         <div class="section-game__bracket--right"></div>
+        <div class="modal hidden">
+          <div>
+            <h2 class="modal__header">Game Comands</h2>
+            <svg class="modal__svg">
+              <use xlink:href="./icons/x-lg.svg#close"></use>
+            </svg>
+          </div>
+          <ul class="list">
+            <li class="modal__item">keys: w,l to control left paddle</li>
+            <li class="modal__item">keys: p,l to control right paddle</li>
+            <li class="modal__item">key: Esc Terminate the game</li>
+          </ul>
+          <button class="modal__button modal__buton--color">Close</button>
+        </div>
         <audio
           class="ready-to-fight"
           src="./soundEffects/prepare-to-fight.mp3"
         ></audio>
       </div>
       <div class="score-bar">
-        <div class="score-bar__disp section-game__display--color">
+        <div class="score-bar__score section-game__display--color">
           <p class="score-bar__msg game--font game--score-l">Score: 0</p>
+        </div>
+        <div class="score-bar__round section-game__display--color">
+          <p class="score-bar__msg game--font game--round-l">Round: 0</p>
         </div>
         <div class="btn-game btn-game--primary">
           <p>Play</p>
         </div>
-        <div class="score-bar__disp section-game__display--color">
+        <div class="score-bar__round section-game__display--color">
+          <p class="score-bar__msg game--font game--round-r">Round: 0</p>
+        </div>
+        <div class="score-bar__score section-game__display--color">
           <p class="score-bar__msg game--font game--score-r">Score: 0</p>
         </div>
       </div>
     </section>
+    <!-- REACT STARTS HERE -->
+    <script
+      src="https://unpkg.com/react@17/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <div id="root"></div>
   </body>
 </html>

@@ -23,12 +23,17 @@
     url("../fonts/PixelEmulator-xq08.ttf") format("ttf");
   font-weight: normal;
   font-style: normal;
+  text-rendering: auto;
 }
 
 *,
 *::after,
 *::before {
   box-sizing: border-box;
+}
+
+.hidden {
+  display: none;
 }
 
 html {
@@ -40,6 +45,7 @@ body {
   background: var(--color-accent);
   font-size: 2.4rem;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 .background--test {
@@ -72,7 +78,7 @@ p {
   margin-top: 0;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 768px) {
   body {
     font-size: 1.8rem;
   }
@@ -182,6 +188,8 @@ p {
 /* Grid */
 .grid {
   display: grid;
+  margin: auto;
+  max-width: 400px;
 }
 
 .grid--2x1 {
@@ -203,10 +211,15 @@ p {
   border-radius: 7px;
   overflow: hidden;
   margin: 3rem;
+  cursor: pointer;
 }
 
 .card__header {
   padding-bottom: 0.5;
+}
+
+.card__header > h2 {
+  font-size: 2.5rem;
 }
 
 .card--primary {
@@ -242,11 +255,13 @@ p {
 @media screen and (min-width: 768px) {
   .card {
     margin: 0;
-    transition: all 0.3s;
+    transition: all 0.3s ease-in-out;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
   }
 
   .card:hover {
-    scale: 1.05;
+    transform: scale(1.05);
   }
 }
 /* Header */
@@ -270,51 +285,35 @@ header > h1 {
   }
 }
 
-/* btn */
-.btn-game {
-  width: 10vw;
-  height: 5vh;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--color-background);
-  border-radius: 10px;
-  opacity: 0.6;
-  cursor: pointer;
-}
-
-.btn-game > p {
-  font-weight: 600;
-  font-size: 2rem;
-  margin: 0;
-}
-
-.btn-game--primary {
-  background: var(--color-accent);
-}
-
-.btn-game:hover {
-  opacity: 1;
-}
-
 /* game */
+.game--font {
+  font-family: "nintendo";
+}
+
 .section-game {
   height: 50vh;
+}
+
+.section-game__msg-mobile {
+  margin-top: 5rem;
+  text-align: center;
+  font-size: 2rem;
 }
 
 .section-game--primary {
   background: var(--color-primary);
 }
 
-.game--font {
+.section-game__heading {
   font-family: "nintendo";
+  font-size: 3rem;
+  margin-top: 0;
+  padding-top: 10rem;
+  margin-bottom: 2rem;
+  padding-top: 10rem;
+  text-align: center;
 }
 
-.game__message {
-  font-size: 3rem;
-  margin: auto;
-}
 .section-game__display {
   width: 60vw;
   height: 70vh;
@@ -322,40 +321,75 @@ header > h1 {
   display: none;
 }
 
-.section-game__heading {
-  font-family: "nintendo", "Inter";
-  font-size: 2rem;
-  text-align: center;
-  margin-top: 0;
-  padding-top: 100px;
-}
-
-.score-bar {
+.score-bar__msg {
   display: none;
 }
 
+.btn-game > p {
+  display: none;
+}
+
+/* game */
+
 @media screen and (min-width: 768px) {
-  .section-game {
-    position: static;
+  /* btn */
+  .btn-game {
+    width: 20rem;
+    height: 5rem;
+    max-width: 20rem;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-background);
+    border-radius: 10px;
+    opacity: 0.6;
+    cursor: pointer;
+  }
+
+  .btn-game > p {
+    font-weight: 600;
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  .btn-game--primary {
+    background: var(--color-accent);
+  }
+
+  .btn-game:hover {
+    opacity: 1;
+  }
+
+  .btn-game > p {
     display: block;
+  }
+
+  .game__message {
+    font-size: 3rem;
+    margin: auto;
+  }
+
+  .section-game {
     height: 100vh;
   }
 
+  .section-game__msg-mobile {
+    display: none;
+  }
+
   .section-game__heading {
-    transform: rotate(0deg);
     font-size: 4rem;
     margin-top: 0;
-    margin-bottom: 2rem;
-    position: static;
-    display: block;
-    padding-top: 0;
+    margin-bottom: 3rem;
+    padding-top: 3rem;
   }
   .section-game__display {
     position: relative;
-    transform: rotate(0deg);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 2rem;
   }
 
   .section-game__display--color {
@@ -387,6 +421,7 @@ header > h1 {
     width: 1.5vh;
     margin: 0;
     opacity: 0;
+    z-index: 10;
   }
 
   .section-game__v-line {
@@ -395,9 +430,8 @@ header > h1 {
     left: 50%;
     margin-left: -0.25vw;
     border: 0.3vw solid black;
-
     border-style: dashed;
-    z-index: -1;
+    z-index: 1;
     opacity: 0.4;
   }
 
@@ -413,18 +447,105 @@ header > h1 {
     justify-content: space-between;
     max-width: 60vw;
     margin: auto;
-    margin-top: 5rem;
+    margin-top: 3rem;
   }
-  .score-bar__disp {
+  .score-bar__score {
     display: flex;
-    height: 10vh;
-    width: 15vw;
-    max-width: 30vw;
+    height: 5rem;
+    width: 20rem;
+    max-width: 20rem;
     align-items: center;
   }
+
+  .score-bar__round {
+    display: flex;
+    height: 5rem;
+    width: 20rem;
+    max-width: 20rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    align-items: center;
+  }
+
   .score-bar__msg {
+    display: block;
     margin: 0;
-    font-size: 4rem;
+    font-size: 2rem;
     margin-left: 1rem;
+  }
+}
+
+/* modal */
+@media screen and (min-width: 768px) {
+  .backdrop {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 20;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+  }
+
+  .modal {
+    position: absolute;
+    background-color: var(--color-secondary);
+    color: var(--color-accent);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    border-radius: 2rem;
+    z-index: 30;
+  }
+
+  .modal__header {
+    margin-left: 2rem;
+    margin-top: 7rem;
+    margin-bottom: 0rem;
+  }
+
+  .modal__button {
+    border: none;
+    display: block;
+    text-align: center;
+    height: 4rem;
+    width: 10rem;
+    margin: auto;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+
+    border-radius: 15px;
+  }
+
+  .modal__button:hover {
+    color: var(--color-secondary);
+    background-color: var(--color-background);
+  }
+
+  .modal__buton--color {
+    color: var(--color-background);
+    background-color: var(--color-accent);
+  }
+
+  .modal__item {
+    margin-bottom: 1rem;
+  }
+
+  .modal > div {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .modal__svg {
+    height: 3rem;
+    width: 3rem;
+    margin-top: 2rem;
+    margin-right: 2rem;
+    color: var(--color-accent);
+  }
+
+  .modal svg:hover {
+    color: white;
   }
 }

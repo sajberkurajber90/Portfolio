@@ -1,2 +1,5 @@
 components
 node_modules
+.cache
+dist
+react

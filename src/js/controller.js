@@ -8,6 +8,12 @@ const btnGame = document.querySelector(".btn-game");
 const RADTODEG = Math.PI / 180;
 const scoreLH = document.querySelector(".game--score-l");
 const scoreRH = document.querySelector(".game--score-r");
+const scoreRoundLH = document.querySelector(".game--round-l");
+const scoreRoundRH = document.querySelector(".game--round-r");
+const modal = document.querySelector(".modal");
+const backdrop = document.querySelector(".backdrop");
+const modalCloseBtn = document.querySelector(".modal__button");
+const modalCloseIcon = document.querySelector(".modal__svg");
 
 // game elements
 const display = document.querySelector(".section-game__display");
@@ -30,6 +36,7 @@ const gameProps = {
   msgRight: "RIGHT WINS",
   endGame: true,
   disebleKeys: ["ArrowUp", "ArrowDown", " "],
+  modalShow: false,
   init: function () {
     this.rightPoint = 0;
     this.leftPoint = 0;
@@ -151,8 +158,6 @@ class Bar extends Coordinates {
       this._keyUP = true;
     }
   }
-
-  speed() {}
 }
 
 // Ball class
@@ -263,8 +268,11 @@ class Ball extends Coordinates {
 }
 
 const game = function (disp, lhBar, rhBar, hitBall) {
-  lhBar.move();
-  rhBar.move();
+  //check if modal is closed
+  if (gameProps.modalShow) {
+    lhBar.move();
+    rhBar.move();
+  }
 
   // Round Check
   if (gameProps.leftPoint >= 5) {
@@ -277,13 +285,15 @@ const game = function (disp, lhBar, rhBar, hitBall) {
     });
     if (gameProps.leftRound >= 3) {
       displayMsg.textContent = `${gameProps.msgLeft}`;
+      scoreRoundLH.textContent = `Round ${gameProps.leftRound}`;
       setTimeout(() => {
         displayMsg.textContent = "";
-        document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
       }, 2000);
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     } else {
-      ++gameProps.leftRound;
       ++gameProps.round;
+      ++gameProps.leftRound;
+      scoreRoundLH.textContent = `Round ${gameProps.leftRound - 1}`;
       displayMsg.textContent = `Round ${gameProps.round}`;
       setTimeout(() => {
         displayMsg.textContent = "";
@@ -300,24 +310,28 @@ const game = function (disp, lhBar, rhBar, hitBall) {
     });
     if (gameProps.rightRound >= 3) {
       displayMsg.textContent = `${gameProps.msgRight}`;
+      scoreRoundLH.textContent = `Round ${gameProps.rightRound}`;
       setTimeout(() => {
         displayMsg.textContent = "";
-        document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
       }, 2000);
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     } else {
       ++gameProps.rightRound;
       ++gameProps.round;
+      scoreRoundLH.textContent = `Round ${gameProps.rightRound - 1}`;
       displayMsg.textContent = `Round ${gameProps.round}`;
       setTimeout(() => {
         displayMsg.textContent = "";
       }, 2000);
     }
   }
-
+  // ball movement
   switch (hitBall.caseState) {
     case "init":
       hitBall.move();
-      ["p", "l"].includes(rhBar.pressKey) || ["w", "s"].includes(lhBar.pressKey)
+      (["p", "l"].includes(rhBar.pressKey) ||
+        ["w", "s"].includes(lhBar.pressKey)) &&
+      gameProps.modalShow
         ? (hitBall.caseState = hitBall.nextState)
         : (hitBall.caseState = "init");
       break;
@@ -437,25 +451,59 @@ const game = function (disp, lhBar, rhBar, hitBall) {
   }
 };
 
+// game start
 btnGame.addEventListener("click", (e) => {
+  // center the page
   gameSec.scrollIntoView({ behavior: "smooth" });
+  // play the sound
   document.querySelector(".ready-to-fight").play();
+  // disable btn
   btnGame.style.pointerEvents = "none";
+  // kill overflow
+  document.body.style = "overflow:hidden;height:100%";
+  // stop inserCoinMSG
   clearInterval(intervalMsg);
+  // clear message
   displayMsg.textContent = "";
+  // enable game recursion
   gameProps.endGame = false;
-  // animate textcontent
-  displayMsg.textContent = `Round ${gameProps.round}`;
-  setTimeout(() => {
-    displayMsg.textContent = "";
-  }, 2000);
+
+  // insert modal and backdrop
+  if (!gameProps.modalShow) {
+    modal.classList.remove("hidden");
+    backdrop.classList.remove("hidden");
+  }
+
+  // resume here 01.07.2021
+  // handle bubbling and dispalying game round after
+  // module close -> closing animation with css
+  const modalHandler = (event) => {
+    if (
+      [backdrop, modalCloseBtn, modalCloseIcon].includes(event.target) &&
+      !gameProps.modalShow
+    ) {
+      backdrop.classList.add("hidden");
+      modal.classList.add("hidden");
+      gameProps.modalShow = true;
+      setTimeout(() => {
+        // disp current game round
+        displayMsg.textContent = `Round ${gameProps.round}`;
+        // clear message
+        setTimeout(() => {
+          displayMsg.textContent = "";
+        }, 2000);
+      }, 1000);
+    }
+  };
+
+  gameSec.addEventListener("click", modalHandler);
 
   const disp = new Coordinates(display);
   const lhBar = new Bar(leftBar, disp, ["w", "s"]);
   const rhBar = new Bar(rightBar, disp, ["p", "l"]);
 
   let vw = document.documentElement.clientWidth;
-  // repair
+
   btnGame.children[0].textContent = "Press Esc to Exit";
 
   const hitBall = new Ball(
@@ -481,18 +529,24 @@ btnGame.addEventListener("click", (e) => {
     gameProps.disebleKeys.includes(e.key) ? e.preventDefault() : "";
 
     if (e.key === "Escape") {
+      // stop game
       btnGame.style.pointerEvents = "auto";
       hitBall.caseState = "init";
+      document.body.style = "";
       lhBar.init();
       rhBar.init();
       gameProps.reInitGame();
       [scoreLH, scoreRH].forEach((score) => {
         score.textContent = "Score 0";
       });
+      [scoreRoundLH, scoreRoundRH].forEach((score) => {
+        score.textContent = "Round 0";
+      });
       window.requestAnimationFrame(
         game.bind(null, disp, lhBar, rhBar, hitBall)
       );
       btnGame.children[0].textContent = "Play";
+      // setTimeout after endGame
       intervalMsg = insertCoinMsg("Insert Coin");
       document.removeEventListener("keydown", onStrocke);
       document.removeEventListener("keyup", onRelease);
