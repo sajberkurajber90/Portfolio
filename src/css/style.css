@@ -479,12 +479,42 @@ header > h1 {
 @media screen and (min-width: 768px) {
   .backdrop {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.75);
+    /* background-color: rgba(0, 0, 0, 0.75); */
     z-index: 20;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100%;
+  }
+
+  .backdrop__animation--in {
+    animation: fadeIn 500ms ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  .backdrop__animation--out {
+    animation: fadeOut 500ms ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      background-color: rgba(0, 0, 0, 0);
+    }
+
+    100% {
+      background-color: rgba(0, 0, 0, 0.75);
+    }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      background-color: rgba(0, 0, 0, 0.75);
+    }
+
+    100% {
+      background-color: rgba(0, 0, 0, 0);
+    }
   }
 
   .modal {
@@ -497,6 +527,43 @@ header > h1 {
     width: 500px;
     border-radius: 2rem;
     z-index: 30;
+    overflow: hidden;
+  }
+
+  .modal__animation--in {
+    animation: modal-in 500ms ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  .modal__animation--out {
+    animation: modal-out 500ms ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes modal-in {
+    0% {
+      left: 0;
+      opacity: 0;
+    }
+
+    100% {
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+  }
+
+  @keyframes modal-out {
+    0% {
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+
+    100% {
+      left: 0;
+      opacity: 0;
+    }
   }
 
   .modal__header {

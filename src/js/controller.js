@@ -455,43 +455,51 @@ const game = function (disp, lhBar, rhBar, hitBall) {
 btnGame.addEventListener("click", (e) => {
   // center the page
   gameSec.scrollIntoView({ behavior: "smooth" });
-  // play the sound
-  document.querySelector(".ready-to-fight").play();
   // disable btn
   btnGame.style.pointerEvents = "none";
-  // kill overflow
-  document.body.style = "overflow:hidden;height:100%";
+
   // stop inserCoinMSG
   clearInterval(intervalMsg);
   // clear message
   displayMsg.textContent = "";
   // enable game recursion
   gameProps.endGame = false;
+  // kill overflow
+  setTimeout(() => {
+    document.body.style = "overflow:hidden;height:100%";
+  }, 500);
 
   // insert modal and backdrop
   if (!gameProps.modalShow) {
-    modal.classList.remove("hidden");
     backdrop.classList.remove("hidden");
+    backdrop.classList.add("backdrop__animation--in");
+    modal.classList.add("modal__animation--in");
   }
-
-  // resume here 01.07.2021
-  // handle bubbling and dispalying game round after
-  // module close -> closing animation with css
   const modalHandler = (event) => {
     if (
-      [backdrop, modalCloseBtn, modalCloseIcon].includes(event.target) &&
+      [
+        backdrop,
+        modalCloseBtn,
+        modalCloseIcon,
+        modalCloseIcon.children[0],
+      ].includes(event.target) &&
       !gameProps.modalShow
     ) {
-      backdrop.classList.add("hidden");
-      modal.classList.add("hidden");
+      modal.classList.remove("modal__animation--in");
+      backdrop.classList.remove("backdrop__animation--in");
+      modal.classList.add("modal__animation--out");
+      backdrop.classList.add("backdrop__animation--out");
       gameProps.modalShow = true;
       setTimeout(() => {
+        backdrop.classList.add("hidden");
         // disp current game round
         displayMsg.textContent = `Round ${gameProps.round}`;
+        // play the sound
+        document.querySelector(".ready-to-fight").play();
         // clear message
         setTimeout(() => {
           displayMsg.textContent = "";
-        }, 2000);
+        }, 1000);
       }, 1000);
     }
   };
@@ -528,6 +536,8 @@ btnGame.addEventListener("click", (e) => {
 
     gameProps.disebleKeys.includes(e.key) ? e.preventDefault() : "";
 
+    if (!gameProps.modalShow) return;
+
     if (e.key === "Escape") {
       // stop game
       btnGame.style.pointerEvents = "auto";
@@ -550,6 +560,7 @@ btnGame.addEventListener("click", (e) => {
       intervalMsg = insertCoinMsg("Insert Coin");
       document.removeEventListener("keydown", onStrocke);
       document.removeEventListener("keyup", onRelease);
+      document.removeEventListener("click", modalHandler);
     }
   };
 
