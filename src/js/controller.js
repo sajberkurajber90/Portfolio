@@ -29,24 +29,25 @@ const randomIntfromInterval = function (min, max) {
 const gameProps = {
   leftPoint: 0,
   rightPoint: 0,
-  leftRound: 1,
-  rightRound: 1,
+  leftRound: 0,
+  rightRound: 0,
   round: 1,
   msgLeft: "LEFT WINS",
   msgRight: "RIGHT WINS",
   endGame: true,
   disebleKeys: ["ArrowUp", "ArrowDown", " "],
-  modalShow: false,
-  init: function () {
+  showModal: false,
+  blockPaddle: false,
+  init() {
     this.rightPoint = 0;
     this.leftPoint = 0;
   },
-  reInitGame: function () {
+  reInitGame() {
     this.rightPoint = 0;
     this.leftPoint = 0;
     this.round = 1;
-    this.leftRound = 1;
-    this.rightRound = 1;
+    this.leftRound = 0;
+    this.rightRound = 0;
     this.endGame = true;
   },
 };
@@ -67,8 +68,6 @@ toToggle.addEventListener("click", function () {
     return;
   }
 });
-
-//  intersection observer
 
 // display Msg - insert coin
 const insertCoinMsg = function (str) {
@@ -115,8 +114,9 @@ class Coordinates {
   }
 }
 
+// Bar class
 class Bar extends Coordinates {
-  constructor(element, disp, keys) {
+  constructor(element, disp, keys, depth) {
     super(element);
     this.disp = disp;
     this._position = [this.posY() - this.disp.posY()];
@@ -125,25 +125,40 @@ class Bar extends Coordinates {
     this._keyUP = true;
     this._keyDown = true;
     this.pressKey = "";
+    this._height = [100, 90, 80];
+    this._depth = depth;
+    this.maxYFlag = false;
     this._maxY =
       this.disp.posBottom() -
       this.disp.posY() -
       (this.posBottom() - this.posY());
   }
 
-  init() {
-    this._position = [this._initPos];
-    this.element.style = `top:${this._position[0]}px`;
+  init(round) {
+    const adaptor = (this._height[0] - this._height[round]) / 2;
+    // return paddles to neutral position - take in account the round
+    this._position = [this._initPos + adaptor];
+    // adjustment for maxY - codnitionaly try if statement
+    if (this.maxYFlag) {
+      this._maxY = this._maxY + 10;
+    }
+    this.element.style = `top:${this._position[0]}px;height:${this._height[round]}px;
+    left:${this._depth[round]}px;`;
+    // reset flag
+    this.maxYFlag = false;
   }
 
-  move() {
+  move(round) {
     // moveUp
     if (this.pressKey === this._keys[0] && this._keyUP) {
       this._position.push(
-        this._position[0] - 10 > 0 ? this._position[0] - 10 : this._position[0]
+        this._position[0] - 10 > 0 ? this._position[0] - 10 : 0
       );
+      // pop previous state
       this._position.shift();
-      this.element.style = `top:${this._position[0]}px`;
+      // set style
+      this.element.style = `top:${this._position[0]}px;height:${this._height[round]}px;
+      left:${this._depth[round]}px;`;
       this._keyDown = true;
     }
     // moveDown
@@ -151,10 +166,13 @@ class Bar extends Coordinates {
       this._position.push(
         this._position[0] + 10 < this._maxY
           ? this._position[0] + 10
-          : this._position[0]
+          : this._maxY
       );
+      // pop previous state
       this._position.shift();
-      this.element.style = `top:${this._position[0]}px`;
+      // set style
+      this.element.style = `top:${this._position[0]}px;height:${this._height[round]}px;
+      left:${this._depth[round]}px;`;
       this._keyUP = true;
     }
   }
@@ -184,6 +202,7 @@ class Ball extends Coordinates {
   _intersection(entries) {
     const [entry] = entries;
     entry.isIntersecting ? (this.state = true) : (this.state = false);
+    console.log(entry.isIntersecting);
   }
 
   _addObserver(element) {
@@ -267,71 +286,91 @@ class Ball extends Coordinates {
   }
 }
 
+// round check fun
+const roundCheck = function () {};
 const game = function (disp, lhBar, rhBar, hitBall) {
-  //check if modal is closed
-  if (gameProps.modalShow) {
-    lhBar.move();
-    rhBar.move();
-  }
-
-  // Round Check
-  if (gameProps.leftPoint >= 5) {
-    console.log(gameProps.leftRound);
-    hitBall.caseState = "init";
-    hitBall.nextState = "goRightUp";
+  // Round Check - Left Bar
+  if (gameProps.leftPoint === 5) {
     gameProps.init();
-    [scoreLH, scoreRH].forEach((score) => {
-      score.textContent = "Score 0";
-    });
-    if (gameProps.leftRound >= 3) {
-      displayMsg.textContent = `${gameProps.msgLeft}`;
-      scoreRoundLH.textContent = `Round ${gameProps.leftRound}`;
-      setTimeout(() => {
-        displayMsg.textContent = "";
-      }, 2000);
-      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
-    } else {
-      ++gameProps.round;
-      ++gameProps.leftRound;
-      scoreRoundLH.textContent = `Round ${gameProps.leftRound - 1}`;
-      displayMsg.textContent = `Round ${gameProps.round}`;
-      setTimeout(() => {
-        displayMsg.textContent = "";
-      }, 2000);
-    }
-  }
-
-  if (gameProps.rightPoint >= 5) {
     hitBall.caseState = "init";
     hitBall.nextState = "goLeftUp";
-    gameProps.init();
-    [scoreLH, scoreRH].forEach((score) => {
-      score.textContent = "Score 0";
-    });
-    if (gameProps.rightRound >= 3) {
-      displayMsg.textContent = `${gameProps.msgRight}`;
-      scoreRoundLH.textContent = `Round ${gameProps.rightRound}`;
+    // reinit scores on disp with delay
+    setTimeout(() => {
+      scoreLH.textContent = `Score ${gameProps.leftPoint}`;
+      scoreRH.textContent = `Score ${gameProps.rightPoint}`;
+    }, 500);
+    // increas a round for left
+    ++gameProps.leftRound;
+    // reset round score on display with delay
+    setTimeout(() => {
+      scoreRoundLH.textContent = `Round ${gameProps.leftRound}`;
+    }, 500);
+    if (gameProps.leftRound === 3) {
+      displayMsg.textContent = gameProps.msgLeft;
       setTimeout(() => {
         displayMsg.textContent = "";
-      }, 2000);
+      }, 1000);
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     } else {
-      ++gameProps.rightRound;
+      // update the message round
       ++gameProps.round;
-      scoreRoundLH.textContent = `Round ${gameProps.rightRound - 1}`;
       displayMsg.textContent = `Round ${gameProps.round}`;
-      setTimeout(() => {
-        displayMsg.textContent = "";
-      }, 2000);
+      setTimeout(() => (displayMsg.textContent = ""), 2000);
+      // adjust maxY with a flag
+      lhBar.maxYFlag = true;
+      // resize the bar
+      lhBar.init(gameProps.leftRound);
     }
   }
+
+  // Round Check - Right Bar
+  if (gameProps.rightPoint === 5) {
+    gameProps.init();
+    hitBall.caseState = "init";
+    hitBall.nextState = "goRightUp";
+    // reinit scores on disp with delay
+    setTimeout(() => {
+      scoreLH.textContent = `Score ${gameProps.leftPoint}`;
+      scoreRH.textContent = `Score ${gameProps.rightPoint}`;
+    }, 500);
+    // increas a round for right
+    ++gameProps.rightRound;
+    // reset round score on display with delay
+    setTimeout(() => {
+      scoreRoundRH.textContent = `Round ${gameProps.rightRound}`;
+    }, 500);
+    // after 3 won rounds -> kill game
+    if (gameProps.rightRound === 3) {
+      displayMsg.textContent = gameProps.msgRight;
+      setTimeout(() => {
+        displayMsg.textContent = "";
+      }, 1000);
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    } else {
+      // update the message
+      ++gameProps.round;
+      displayMsg.textContent = `Round ${gameProps.round}`;
+      setTimeout(() => (displayMsg.textContent = ""), 2000);
+      // adjust maxY with a flag
+      rhBar.maxYFlag = true;
+      // resize a bar
+      rhBar.init(gameProps.rightRound);
+    }
+  }
+
+  // paddle movement
+  if (gameProps.showModal) {
+    lhBar.move(gameProps.leftRound);
+    rhBar.move(gameProps.rightRound);
+  }
+
   // ball movement
   switch (hitBall.caseState) {
     case "init":
       hitBall.move();
       (["p", "l"].includes(rhBar.pressKey) ||
         ["w", "s"].includes(lhBar.pressKey)) &&
-      gameProps.modalShow
+      gameProps.showModal
         ? (hitBall.caseState = hitBall.nextState)
         : (hitBall.caseState = "init");
       break;
@@ -353,13 +392,13 @@ const game = function (disp, lhBar, rhBar, hitBall) {
       if (!hitBall.state) {
         // score update
         scoreLH.textContent = `Score: ${++gameProps.leftPoint}`;
-        lhBar.init();
-        rhBar.init();
+        lhBar.init(gameProps.leftRound);
+        rhBar.init(gameProps.rightRound);
         hitBall.caseState = "init";
         hitBall.randPos = hitBall.randPos === "top" ? "middle" : "top";
         hitBall.nextState = "goRightDown";
         hitBall.transparence = true;
-        hitBall.randAngle = Math.tan(randomIntfromInterval(10, 45) * RADTODEG);
+        hitBall.randAngle = Math.tan(40 * RADTODEG);
       }
       break;
     case "goRightDown":
@@ -379,13 +418,13 @@ const game = function (disp, lhBar, rhBar, hitBall) {
       if (!hitBall.state) {
         // score update
         scoreLH.textContent = `Score: ${++gameProps.leftPoint}`;
-        lhBar.init();
-        rhBar.init();
+        lhBar.init(gameProps.leftRound);
+        rhBar.init(gameProps.rightRound);
         hitBall.caseState = "init";
         hitBall.randPos = hitBall.randPos === "bottom" ? "middle" : "bottom";
         hitBall.nextState = "goRightUp";
         hitBall.transparence = true;
-        hitBall.randAngle = Math.tan(randomIntfromInterval(10, 45) * RADTODEG);
+        hitBall.randAngle = Math.tan(40 * RADTODEG);
       }
       break;
     case "goLeftDown":
@@ -406,13 +445,13 @@ const game = function (disp, lhBar, rhBar, hitBall) {
 
       if (!hitBall.state) {
         scoreRH.textContent = `Score: ${++gameProps.rightPoint}`;
-        lhBar.init();
-        rhBar.init();
+        lhBar.init(gameProps.leftRound);
+        rhBar.init(gameProps.rightRound);
         hitBall.caseState = "init";
         hitBall.randPos = hitBall.randPos === "bottom" ? "middle" : "bottom";
         hitBall.nextState = "goLeftUp";
         hitBall.transparence = true;
-        hitBall.randAngle = Math.tan(randomIntfromInterval(10, 45) * RADTODEG);
+        hitBall.randAngle = Math.tan(40 * RADTODEG);
       }
       break;
     case "goLeftUp":
@@ -432,20 +471,31 @@ const game = function (disp, lhBar, rhBar, hitBall) {
 
       if (!hitBall.state) {
         scoreRH.textContent = `Score: ${++gameProps.rightPoint}`;
-        lhBar.init();
-        rhBar.init();
+        lhBar.init(gameProps.leftRound);
+        rhBar.init(gameProps.rightRound);
         hitBall.caseState = "init";
         hitBall.randPos = hitBall.randPos === "top" ? "middle" : "top";
         hitBall.nextState = "goLeftDown";
         hitBall.transparence = true;
-        hitBall.randAngle = Math.tan(randomIntfromInterval(10, 45) * RADTODEG);
+        hitBall.randAngle = Math.tan(40 * RADTODEG);
       }
       break;
+  }
+
+  // block paddles for 0.2s
+  if (!hitBall.state && !gameProps.blockPaddle) {
+    gameProps.blockPaddle = true;
+    setTimeout(() => {
+      gameProps.blockPaddle = false;
+      console.log("Unblock");
+    }, 200);
   }
 
   const animId = window.requestAnimationFrame(
     game.bind(null, disp, lhBar, rhBar, hitBall)
   );
+
+  // kill the game
   if (gameProps.endGame) {
     window.cancelAnimationFrame(animId);
   }
@@ -470,26 +520,40 @@ btnGame.addEventListener("click", (e) => {
   }, 500);
 
   // insert modal and backdrop
-  if (!gameProps.modalShow) {
+  if (!gameProps.showModal) {
     backdrop.classList.remove("hidden");
     backdrop.classList.add("backdrop__animation--in");
     modal.classList.add("modal__animation--in");
+  } else {
+    setTimeout(() => {
+      // disp current game round
+      displayMsg.textContent = `Round ${gameProps.round}`;
+      // play the sound
+      document.querySelector(".ready-to-fight").play();
+      // clear message
+      setTimeout(() => {
+        displayMsg.textContent = "";
+      }, 1000);
+    }, 1000);
   }
+
   const modalHandler = (event) => {
     if (
       [
+        // event bubling
         backdrop,
         modalCloseBtn,
         modalCloseIcon,
         modalCloseIcon.children[0],
       ].includes(event.target) &&
-      !gameProps.modalShow
+      !gameProps.showModal
     ) {
+      // modal remove animation
       modal.classList.remove("modal__animation--in");
       backdrop.classList.remove("backdrop__animation--in");
       modal.classList.add("modal__animation--out");
       backdrop.classList.add("backdrop__animation--out");
-      gameProps.modalShow = true;
+      gameProps.showModal = true;
       setTimeout(() => {
         backdrop.classList.add("hidden");
         // disp current game round
@@ -504,13 +568,12 @@ btnGame.addEventListener("click", (e) => {
     }
   };
 
-  gameSec.addEventListener("click", modalHandler);
+  // add short circuiting
+  backdrop.addEventListener("click", modalHandler);
 
   const disp = new Coordinates(display);
-  const lhBar = new Bar(leftBar, disp, ["w", "s"]);
-  const rhBar = new Bar(rightBar, disp, ["p", "l"]);
-
-  let vw = document.documentElement.clientWidth;
+  const lhBar = new Bar(leftBar, disp, ["w", "s"], [50, 60, 70]);
+  const rhBar = new Bar(rightBar, disp, ["p", "l"], [1242, 1232, 1222]);
 
   btnGame.children[0].textContent = "Press Esc to Exit";
 
@@ -519,7 +582,7 @@ btnGame.addEventListener("click", (e) => {
     {
       root: display,
       threshold: 1,
-      rootMargin: `0px -${(2 * vw) / 100}px 0px -${(2 * vw) / 100}px`,
+      rootMargin: `10px -50px 10px -50px`,
     },
     disp
   );
@@ -530,34 +593,33 @@ btnGame.addEventListener("click", (e) => {
   };
 
   const onStrocke = function (e) {
-    console.log(e.key);
-    lhBar.pressKey = e.key;
-    rhBar.pressKey = e.key;
+    lhBar.pressKey = gameProps.blockPaddle ? "" : e.key;
+    rhBar.pressKey = gameProps.blockPaddle ? "" : e.key;
 
     gameProps.disebleKeys.includes(e.key) ? e.preventDefault() : "";
 
-    if (!gameProps.modalShow) return;
+    // during modal open simply return
+    if (!gameProps.showModal) return;
 
+    // end game
     if (e.key === "Escape") {
-      // stop game
-      btnGame.style.pointerEvents = "auto";
       hitBall.caseState = "init";
-      document.body.style = "";
-      lhBar.init();
-      rhBar.init();
+      lhBar.init(0); // reinit paddle position
+      rhBar.init(0); // reinit paddle position
       gameProps.reInitGame();
-      [scoreLH, scoreRH].forEach((score) => {
-        score.textContent = "Score 0";
-      });
-      [scoreRoundLH, scoreRoundRH].forEach((score) => {
-        score.textContent = "Round 0";
-      });
-      window.requestAnimationFrame(
-        game.bind(null, disp, lhBar, rhBar, hitBall)
-      );
-      btnGame.children[0].textContent = "Play";
-      // setTimeout after endGame
-      intervalMsg = insertCoinMsg("Insert Coin");
+      setTimeout(() => {
+        document.body.style = ""; // reinit scroll bar
+        [scoreLH, scoreRH].forEach((score) => {
+          score.textContent = "Score 0";
+        });
+        [scoreRoundLH, scoreRoundRH].forEach((score) => {
+          score.textContent = "Round 0";
+        });
+        btnGame.children[0].textContent = "Play";
+        intervalMsg = insertCoinMsg("Insert Coin");
+        btnGame.style.pointerEvents = "auto";
+      }, 1500);
+
       document.removeEventListener("keydown", onStrocke);
       document.removeEventListener("keyup", onRelease);
       document.removeEventListener("click", modalHandler);

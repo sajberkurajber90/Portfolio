@@ -10,7 +10,10 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "css-loader": "^5.2.6",
+    "style-loader": "^3.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel ./src/index.html"
