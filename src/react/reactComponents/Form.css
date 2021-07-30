@@ -1,0 +1,41 @@
+.Form__button {
+  display: block;
+  border: 1px solid white;
+  border-radius: 2rem;
+  margin: 0 auto 0;
+  box-sizing: border-box;
+  width: 12rem;
+  height: 4rem;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.Form__button--color {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+.Form__button--color-invalid {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+.Form {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Form__button--color:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.Form__button--color-invalid:hover {
+  border-color: tomato;
+  color: tomato;
+  cursor: not-allowed;
+}

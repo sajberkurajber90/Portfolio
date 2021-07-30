@@ -1,0 +1,33 @@
+.NotFound {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.NotFound__header {
+  text-align: center;
+  font-size: 3rem;
+  color: white;
+  margin: 0;
+}
+
+.NotFound__span {
+  color: var(--color-primary);
+}
+
+.NotFound__Error {
+  font-size: 5rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.NotFound__Link {
+  position: absolute;
+  color: var(--color-primary);
+  bottom: 10rem;
+  text-decoration: none;
+  font-size: 2.5rem;
+}

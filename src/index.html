@@ -4,68 +4,110 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Portfolio</title>
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-
     <script defer src="./js/controller.js"></script>
   </head>
   <body>
-    <!-- Modal -->
+    <!-- Modal Cookies -->
+    <div class="backdrop__cookies hidden" id="modal-cookies">
+      <div class="cookies cookies--color">
+        <svg class="cookies__svg">
+          <use xlink:href="./icons/cookie-jar.svg#jar"></use>
+        </svg>
+        <h2 class="cookies__header">Cookie Jar is temporary full.</h2>
+        <button class="cookies__button">Accept</button>
+      </div>
+    </div>
+    <!-- Modal Game-->
     <div class="backdrop hidden">
-      <div class="modal">
+      <div class="modal modal--color">
         <div>
-          <h2 class="modal__header">Game Comands</h2>
-          <svg class="modal__svg">
+          <h2 class="modal__header">Game Commands</h2>
+          <svg class="modal__svg modal__svg--color">
             <use xlink:href="./icons/x-lg.svg#close"></use>
           </svg>
         </div>
         <ul class="list">
-          <li class="modal__item">keys: w,l to control left paddle</li>
-          <li class="modal__item">keys: p,l to control right paddle</li>
-          <li class="modal__item">key: Esc Terminate the game</li>
+          <li class="modal__item">
+            Left paddle: w,l to control left paddle up/down
+          </li>
+          <li class="modal__item">
+            Right paddle: p,l to control right paddle up/down
+          </li>
+          <li class="modal__item">Esc to Terminate the Game</li>
         </ul>
+        <h3>
+          Hand, which reaches first score of 5 is a round winner / Game winner
+        </h3>
         <button class="modal__button modal__buton--color">Close</button>
       </div>
     </div>
-    <!-- Starting page -->
-    <header class="header background--test">
+    <!-- Navigation -->
+    <header class="header">
       <nav class="nav nav--primary">
-        <svg class="icon--back icon icon-1">
+        <div class="icon__contact">
+          <a
+            class="a__icon"
+            href="https://linkedin.com/in/tibor-bezdan"
+            target="_blank"
+          >
+            <svg class="icon__linkedin icon--back">
+              <use xlink:href="./icons/linkedin.svg#in"></use>
+            </svg>
+          </a>
+          <a
+            class="a__icon"
+            href="https://github.com/sajberkurajber90/Portfolio"
+            target="_blank"
+          >
+            <svg class="icon__git icon--back">
+              <use xlink:href="./icons/git.svg#git"></use>
+            </svg>
+          </a>
+        </div>
+        <svg class="icon--back icon__menu icon-1">
           <use xlink:href="./icons/sprite.svg#menu"></use>
         </svg>
         <ul class="list nav__list collapsible__content list--inline">
-          <li class="nav__item">Kontakt</li>
-          <li class="nav__item">lonely Pong 19</li>
+          <li class="nav__item">Lonely Pong 19</li>
           <li class="nav__item">WeatherApp</li>
+          <li class="nav__item">Kontakt</li>
         </ul>
       </nav>
-      <h1 class="header_heading">- Projects -</h1>
-      <div class="grid grid--1x2">
-        <div class="card grid grid--2x1 card-game">
-          <header class="card__header card--primary">
-            <h2 class="card__heading">Lonely Pong 19</h2>
-          </header>
-          <div class="card__body card--secondary">
-            <ul class="list card__list">
-              <li class="card__item">Single player game</li>
-              <li class="card__item">Writen in Vanilla JS</li>
+      <!-- Home -->
+      <div class="grid">
+        <div class="grid__game-card grid__game-card--color">
+          <div class="grid__content">
+            <h1 class="grid__header">Lonely Pong 19</h1>
+            <ul class="list grid__list">
+              <li>Single Player Game</li>
+              <li>Vanilla JS</li>
+              <li>MVC Pattern</li>
             </ul>
           </div>
         </div>
-        <div class="card grid grid--2x1 card-weahter">
-          <header class="card__header card--primary">
-            <h2 class="card__heading">WeatherApp</h2>
-          </header>
-          <div class="card__body card--secondary">
-            <ul class="list card__list">
-              <li class="card__item">Weahter displayed</li>
-              <li class="card__item">Leaflet</li>
-              <li class="card__item">Location using API</li>
+        <div class="grid__subject-card">
+          <h1>&ltPong & Weather <span class="grid__span">/</span>&gt</h1>
+        </div>
+        <div class="grid__wheater-card grid__wheater-card--color">
+          <div class="grid__content">
+            <h1 class="grid__header">WeatherApp</h1>
+            <ul class="list grid__list">
+              <li>SPA</li>
+              <li>React</li>
+              <li>Router</li>
             </ul>
           </div>
         </div>
@@ -84,29 +126,26 @@
         <p class="game__message game--font">Insert coin</p>
         <div class="section-game__ball"></div>
         <div class="section-game__bracket--right"></div>
-
+        <!-- score -->
+        <div class="score-bar__score score__left">
+          <p class="score-bar__msg game--font game--score-l">0</p>
+        </div>
+        <div class="score-bar__score score__right">
+          <p class="score-bar__msg game--font game--score-r">0</p>
+        </div>
+        <div class="score-bar__round score__left">
+          <p class="score-bar__msg game--font game--round-l">0</p>
+        </div>
+        <div class="score-bar__round score__right">
+          <p class="score-bar__msg game--font game--round-r">0</p>
+        </div>
+        <!-- sound -->
         <audio
           class="ready-to-fight"
           src="./soundEffects/prepare-to-fight.mp3"
         ></audio>
       </div>
-      <div class="score-bar">
-        <div class="score-bar__score section-game__display--color">
-          <p class="score-bar__msg game--font game--score-l">Score: 0</p>
-        </div>
-        <div class="score-bar__round section-game__display--color">
-          <p class="score-bar__msg game--font game--round-l">Round: 0</p>
-        </div>
-        <div class="btn-game btn-game--primary">
-          <p>Play</p>
-        </div>
-        <div class="score-bar__round section-game__display--color">
-          <p class="score-bar__msg game--font game--round-r">Round: 0</p>
-        </div>
-        <div class="score-bar__score section-game__display--color">
-          <p class="score-bar__msg game--font game--score-r">Score: 0</p>
-        </div>
-      </div>
+      <button class="btn-game btn-game--primary">Play</button>
     </section>
     <!-- REACT STARTS HERE -->
     <div id="root"></div>
@@ -114,10 +153,7 @@
       src="https://unpkg.com/react@17/umd/react.development.js"
       crossorigin
     ></script>
-    <script
-      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
-      crossorigin
-    ></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="./react/index.js"></script>
   </body>
 </html>

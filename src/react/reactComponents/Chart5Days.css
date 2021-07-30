@@ -1,0 +1,11 @@
+.Chart5Days {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .Chart5Days {
+    width: 60vw;
+    display: block;
+    flex-grow: 1;
+    border: 2px solid pink;
+  }
+}
