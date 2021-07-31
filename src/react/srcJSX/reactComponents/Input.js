@@ -7,7 +7,10 @@ const Input = function (props) {
   // custom hook
   const { value, inputHandler, isFocus, hasError, inputBlur, inputFocus } =
     useInput();
+  // dispatch input validaiton
   const dispatch = useDispatch();
+
+  const isEmpty = props.isEmpty;
 
   //  - check if valid input (no num or special chars or emptyinput)
   let style = '';
@@ -20,16 +23,16 @@ const Input = function (props) {
   if (isFocus && hasError) {
     style = 'Input__invalid';
   }
-  if (value === null && props.isEmpty) {
+  if (value === null && isEmpty) {
     style = 'Input__invalid';
   }
 
-  // dispatch after render
+  // dispatch after render and manage btn apperance
   useEffect(() => {
     dispatch({ type: 'INPUT', input: hasError ? '' : value });
-    // console.log(style);
+    console.log(style);
     style === 'Input__invalid' ? props.isInvalid(true) : props.isInvalid(false);
-  }, [value, isFocus, props]);
+  }, [value, isFocus, isEmpty]);
 
   return (
     <div className="Input__flex">

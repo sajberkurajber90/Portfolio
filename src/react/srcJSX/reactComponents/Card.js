@@ -15,5 +15,6 @@ const Card = function (props) {
 export default Card;
 
 // #TODO:
+// implement use-http hook
 // implement card with expendable field onClick for mobile
 // onClik desktop refresh bottom scren for 5 days weather forecast

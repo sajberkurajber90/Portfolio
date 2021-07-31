@@ -12,8 +12,12 @@ var Input = function Input(props) {
       hasError = _useInput.hasError,
       inputBlur = _useInput.inputBlur,
       inputFocus = _useInput.inputFocus;
+  // dispatch input validaiton
+
 
   var dispatch = useDispatch();
+
+  var isEmpty = props.isEmpty;
 
   //  - check if valid input (no num or special chars or emptyinput)
   var style = '';
@@ -26,16 +30,16 @@ var Input = function Input(props) {
   if (isFocus && hasError) {
     style = 'Input__invalid';
   }
-  if (value === null && props.isEmpty) {
+  if (value === null && isEmpty) {
     style = 'Input__invalid';
   }
 
-  // dispatch after render
+  // dispatch after render and manage btn apperance
   useEffect(function () {
     dispatch({ type: 'INPUT', input: hasError ? '' : value });
-    // console.log(style);
+    console.log(style);
     style === 'Input__invalid' ? props.isInvalid(true) : props.isInvalid(false);
-  }, [value, isFocus, props]);
+  }, [value, isFocus, isEmpty]);
 
   return React.createElement(
     'div',
