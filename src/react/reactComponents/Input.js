@@ -1,10 +1,19 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import useInput from '../hooks/use-input';
 import './Input.css';
 
 var Input = function Input(props) {
+  // props
+  var isEmpty = props.isEmpty;
+  var isExisting = props.isExisting;
+  var onHoverHandler = props.onHover;
+
+  // inputRef
+  var inputRef = useRef('');
+
   // custom hook
+
   var _useInput = useInput(),
       value = _useInput.value,
       inputHandler = _useInput.inputHandler,
@@ -17,9 +26,12 @@ var Input = function Input(props) {
 
   var dispatch = useDispatch();
 
-  var isEmpty = props.isEmpty;
-
-  //  - check if valid input (no num or special chars or emptyinput)
+  // esc hanlder
+  var escHandler = function escHandler(event) {
+    event.key === 'Escape' ? inputRef.current.blur() : '';
+  };
+  // style logic
+  // check if valid input (no num or special chars or empty input)
   var style = '';
   if (hasError || value === '') {
     style = 'Input__invalid';
@@ -30,15 +42,19 @@ var Input = function Input(props) {
   if (isFocus && hasError) {
     style = 'Input__invalid';
   }
-  if (value === null && isEmpty) {
+
+  if ((value === null || value === '') && isEmpty) {
+    style = 'Input__invalid';
+  }
+
+  if (isExisting) {
     style = 'Input__invalid';
   }
 
   // dispatch after render and manage btn apperance
   useEffect(function () {
     dispatch({ type: 'INPUT', input: hasError ? '' : value });
-    console.log(style);
-    style === 'Input__invalid' ? props.isInvalid(true) : props.isInvalid(false);
+    style === 'Input__invalid' ? onHoverHandler(true) : onHoverHandler(false);
   }, [value, isFocus, isEmpty]);
 
   return React.createElement(
@@ -50,18 +66,20 @@ var Input = function Input(props) {
       'WeatherApp'
     ),
     React.createElement('input', {
+      ref: inputRef,
       onChange: inputHandler,
       onFocus: inputFocus,
       onBlur: inputBlur,
       className: 'Input ' + style,
       type: 'text',
       id: 'input',
-      placeholder: 'Enter the City Name ...'
+      placeholder: 'Enter the City Name ...',
+      onKeyDown: escHandler
     }),
     React.createElement(
       'p',
-      null,
-      style === 'Input__invalid' ? 'Invalid Input' : ''
+      { className: 'Input__p' },
+      style === 'Input__invalid' ? isExisting ? value + ' already fetched. Go back and restore it, if not displayed' : 'Invalid Input' : ''
     )
   );
 };

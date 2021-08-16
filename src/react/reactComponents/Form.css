@@ -4,9 +4,9 @@
   border-radius: 2rem;
   margin: 0 auto 0;
   box-sizing: border-box;
-  width: 12rem;
-  height: 4rem;
-  font-size: 2rem;
+  width: 10rem;
+  height: 3.5rem;
+  font-size: 1.8rem;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
@@ -38,4 +38,13 @@
   border-color: tomato;
   color: tomato;
   cursor: not-allowed;
+}
+
+@media screen and (min-width: 1100) {
+  .Form__button {
+    width: 12rem;
+    height: 4rem;
+    font-size: 2rem;
+    font-weight: 400;
+  }
 }

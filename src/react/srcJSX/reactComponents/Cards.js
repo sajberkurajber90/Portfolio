@@ -3,32 +3,26 @@
 
 import Card from './Card';
 import './Cards.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
 
 export default function Cards(props) {
-  // load data from store
-  const { winWidth: width, query } = useSelector(state => {
-    return state;
-  });
+  // props decomposition
+  const width = props.width;
+  const currentWeather = props.currentWeather;
+  const currentUrl = props.currentUrl;
 
-  // dispatch to store
-  const dispatch = useDispatch();
+  let results;
+  currentUrl.length === 0
+    ? (results = null)
+    : (results = currentUrl.map((item, index) => {
+        return (
+          <Card
+            key={index}
+            city={item}
+            delay={index}
+            currentWeather={currentWeather}
+          />
+        );
+      }));
 
-  // if query empty use url to init cards
-  const results = (query.length === 0 ? props.urlData : query).map(
-    (card, index) => {
-      return <Card key={index} location={card} weather={width} />;
-    }
-  );
-
-  console.log(query);
-
-  // dispatch to store the props if query is empty
-  useEffect(() => {
-    if (query.length === 0)
-      dispatch({ type: 'ALL_INPUTS', arr: props.urlData });
-  }, []);
-
-  return <div className="Cards">{results}</div>;
+  return <div className="Cards"> {results}</div>;
 }

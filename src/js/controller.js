@@ -13,7 +13,6 @@ const scoreRoundRH = document.querySelector('.game--round-r');
 const modal = document.querySelector('.modal');
 const backdrop = document.querySelector('.backdrop');
 const modalCloseBtn = document.querySelector('.modal__button');
-const modalCloseIcon = document.querySelector('.modal__svg');
 
 // game elements
 const display = document.querySelector('.section-game__display');
@@ -522,8 +521,6 @@ btnGame.addEventListener('click', e => {
         // event bubling
         backdrop,
         modalCloseBtn,
-        modalCloseIcon,
-        modalCloseIcon.children[0],
       ].includes(event.target) &&
       !gameProps.showModal
     ) {

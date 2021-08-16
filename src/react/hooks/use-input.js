@@ -8,7 +8,7 @@ const initilaValue = {
 };
 
 // regex def
-let regx = /[^a-zA-Z\s]+$/;
+let regx = /^[a-zA-Z\s]*$/;
 
 // reducer
 const inputReducer = function (state, action) {
@@ -28,6 +28,14 @@ const inputReducer = function (state, action) {
     };
   }
 
+  if (action.type === 'CLEAR') {
+    return {
+      isFocus: false,
+      value: '',
+      hasError: state.hasError,
+    };
+  }
+
   return state;
 };
 
@@ -38,7 +46,7 @@ const useInput = function () {
   // #inputValue
   const inputHandler = function (event) {
     // regex check
-    const hasError = Boolean(event.target.value.match(regx)) ? true : false;
+    const hasError = !Boolean(event.target.value.match(regx));
     dispatchLocal({
       type: 'INPUT',
       value: event.target.value,
@@ -55,6 +63,11 @@ const useInput = function () {
     dispatchLocal({ type: 'BLUR' });
   };
 
+  // clear input
+  const clearInput = function () {
+    dispatchLocal({ type: 'CLEAR' });
+  };
+
   return {
     value: inputState.value,
     isFocus: inputState.isFocus,
@@ -62,6 +75,7 @@ const useInput = function () {
     inputHandler,
     inputFocus,
     inputBlur,
+    clearInput,
   };
 };
 

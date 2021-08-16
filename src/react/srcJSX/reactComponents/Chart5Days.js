@@ -3,7 +3,7 @@ import './Chart5Days.css';
 
 const Chart5Days = function () {
   return (
-    <div className="Chart5Days">
+    <div className="Chart5Days" id={'chart'}>
       <h1>No Data</h1>
     </div>
   );

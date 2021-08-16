@@ -4,7 +4,7 @@ import './Chart5Days.css';
 var Chart5Days = function Chart5Days() {
   return React.createElement(
     'div',
-    { className: 'Chart5Days' },
+    { className: 'Chart5Days', id: 'chart' },
     React.createElement(
       'h1',
       null,

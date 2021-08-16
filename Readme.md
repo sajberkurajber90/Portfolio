@@ -1,5 +1,5 @@
-# Porfolio page - Pong&Weather
+# **Portfolio page - Pong&Weather**
 
-## Lonely Pong 19
+## **Lonely Pong 19**
 
-## WeatherApp
+## **WeatherApp**

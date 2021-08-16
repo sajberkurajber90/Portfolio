@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -7,7 +7,7 @@ import Home from './pages/Home';
 import Results from './pages/Results';
 import NotFound from './pages/NotFound';
 import WindowSize from './reactComponents/WindowSize';
-import { Fragment } from 'react';
+import KeyPress from './reactComponents/KeyPress';
 
 function App() {
   return React.createElement(
@@ -41,7 +41,8 @@ function App() {
         React.createElement(NotFound, null)
       )
     ),
-    React.createElement(WindowSize, null)
+    React.createElement(WindowSize, null),
+    React.createElement(KeyPress, null)
   );
 }
 
