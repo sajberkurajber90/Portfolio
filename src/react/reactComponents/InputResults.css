@@ -1,0 +1,23 @@
+.InputResults {
+  flex-grow: 1;
+  border: none;
+  height: 4rem;
+  border-radius: 2rem;
+  padding-left: 1rem;
+  outline: none;
+  font-size: 1.5rem;
+}
+
+.InputResults::placeholder {
+  font-size: 1.5rem;
+}
+
+@media screen and (min-width: 1100px) {
+  .InputResults::placeholder {
+    font-size: 1.8rem;
+  }
+
+  .InputResults {
+    font-size: 2rem;
+  }
+}

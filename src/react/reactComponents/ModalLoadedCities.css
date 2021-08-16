@@ -1,0 +1,60 @@
+.ModalLoadedCities {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.ModalLoadedCities--hidden {
+  display: none;
+}
+
+.Modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+  width: 80vw;
+  background-color: var(--color-secondary);
+  max-width: 35rem;
+  border-radius: 2rem;
+  z-index: 60;
+}
+
+.Modal__header {
+  font-size: 3rem;
+  color: var(--color-primary);
+  margin-left: 1rem;
+}
+
+.Modal__close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1rem;
+  fill: var(--color-primary);
+  width: 2rem;
+  height: 2rem;
+  transition: all 0.3s ease-in-out;
+}
+
+@media screen and (min-width: 1100px) {
+  .Modal {
+    height: 40rem;
+    width: 40rem;
+    max-width: 50rem;
+  }
+  .Modal__header {
+    font-size: 4rem;
+  }
+  .Modal__close:hover {
+    fill: white;
+    transform: scale(1.2, 1.2);
+  }
+}

@@ -1,0 +1,47 @@
+.FormModal {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.FormModal__Inputs {
+  margin-top: 0;
+  flex-grow: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.FormModal__msg {
+  margin-left: 1rem;
+  font-size: 1.8rem;
+  color: var(--color-primary);
+}
+
+.FormModal__btn {
+  height: 3rem;
+  width: 8rem;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  border-radius: 2rem;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1100px) {
+  .FormModal__msg {
+    font-size: 2rem;
+  }
+
+  .FormModal__btn {
+    height: 4rem;
+    width: 10rem;
+    font-size: 2rem;
+  }
+}

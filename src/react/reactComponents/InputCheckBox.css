@@ -1,0 +1,41 @@
+.InputCheckBox__label {
+  margin-left: 1rem;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.InputCheckBox {
+  display: inline-flex;
+  align-items: center;
+}
+
+.InputCheckBox input {
+  border: none;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.InputCheckBox-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  fill: var(--color-secondary);
+}
+
+.InputCheckBox-custom {
+  display: inline-block;
+  position: relative;
+  margin-left: 2rem;
+  width: 1.5rem;
+  background-color: white;
+  height: 1.5rem;
+  border-radius: 0.2rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.InputCheckBox-custom:hover {
+  box-shadow: 0 0 0.5rem pink;
+}
