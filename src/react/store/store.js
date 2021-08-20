@@ -9,11 +9,16 @@ const initState = {
   replaceHistory: false,
   inputSource: false,
   modalHidden: true,
+  errorLocation: [],
 };
 
 // the following is handeled in the store:
 // - update url on refreash
-// - make sure to match url with cities name
+// - make sure to match url with city names
+// - url update on error
+// - modal for not displayed cities
+// - error handling
+// - Chard handling
 
 const reducer = function (state = initState, action) {
   switch (action.type) {
@@ -23,10 +28,11 @@ const reducer = function (state = initState, action) {
         winWidth: state.winWidth, // win size for responsive design
         currentWeather: [...state.currentWeather], // current weather data
         onClickLocation: state.onClickLocation, // clicked location
-        currentUrl: [...state.currentUrl],
-        replaceHistory: state.replaceHistory,
-        inputSource: state.inputSource, // is event comming from input filed or manual url update
+        currentUrl: [...state.currentUrl], // currentUrl data
+        replaceHistory: state.replaceHistory, // replace history flag
+        inputSource: state.inputSource, // is event comming from home input field or manual url update
         modalHidden: state.modalHidden, // logic for showing and hidding modal
+        errorLocation: [...state.errorLocation], // list of the error queryies
       };
 
     case 'ALL_INPUTS':
@@ -41,6 +47,7 @@ const reducer = function (state = initState, action) {
         replaceHistory: false,
         inputSource: action.source ? action.source : false,
         modalHidden: state.modalHidden,
+        errorLocation: [...state.errorLocation],
       };
 
     case 'RESIZE': {
@@ -53,6 +60,7 @@ const reducer = function (state = initState, action) {
         replaceHistory: state.replaceHistory,
         inputSource: state.inputSource,
         modalHidden: state.modalHidden,
+        errorLocation: [...state.errorLocation],
       };
     }
 
@@ -94,6 +102,7 @@ const reducer = function (state = initState, action) {
         replaceHistory: replaceHistory,
         inputSource: false,
         modalHidden: state.modalHidden,
+        errorLocation: [...state.errorLocation],
       };
 
     case 'MODAL':
@@ -106,27 +115,49 @@ const reducer = function (state = initState, action) {
         replaceHistory: state.replaceHistory,
         inputSource: state.inputSource,
         modalHidden: action.payload,
+        errorLocation: [...state.errorLocation],
       };
 
-    // case 'REMOVE_LOCATION':
-    //   return {
-    //     input: state.input,
-    //     winWidth: state.winWidth,
-    //     currentWeather: [...state.currentWeather],
-    //     onClickLocation: state.onClickLocation,
-    //     currentUrl: state.currentUrl,
-    //     updateHistory: state.updateHistory,
-    //   };
+    case 'ERROR':
+      let errorCity;
+      let errorLocation;
+      let url;
+      if (typeof action.payload !== 'object') {
+        errorCity = action.payload;
+        errorLocation = [...state.errorLocation];
+        errorLocation.push(errorCity);
+        // handle duplciates
+        errorLocation = [...new Set(errorLocation)];
+        // filter out url
+        url = [...state.currentUrl].filter(element => {
+          return element !== errorCity;
+        });
+      }
 
-    // case 'ON_CARD_CLICK':
-    //   return {
-    //     input: state.input,
-    //     winWidth: state.winWidth,
-    //     currentWeather: [...state.currentWeather],
-    //     onClickLocation: action.location,
-    //     currentUrl: state.currentUrl,
-    //     updateHistory: state.updateHistory,
-    //   };
+      return {
+        input: state.input,
+        winWidth: state.winWidth,
+        currentWeather: [...state.currentWeather],
+        onClickLocation: state.onClickLocation,
+        currentUrl: action.clear ? [...state.currentUrl] : [...url],
+        replaceHistory: action.replaceHistory ? true : false,
+        inputSource: false,
+        modalHidden: state.modalHidden,
+        errorLocation: action.clear ? [] : [...errorLocation],
+      };
+
+    case 'ON_CARD_CLICK':
+      return {
+        input: state.input,
+        winWidth: state.winWidth,
+        currentWeather: [...state.currentWeather],
+        onClickLocation: action.payload,
+        currentUrl: [...state.currentUrl],
+        replaceHistory: false,
+        inputSource: false,
+        modalHidden: state.modalHidden,
+        errorLocation: [...state.errorLocation],
+      };
 
     default:
       return state;

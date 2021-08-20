@@ -60,7 +60,7 @@ var Form = function Form() {
     }
   };
 
-  // on empty valid again untel submition
+  // on empty valid again stop submition
   useEffect(function () {
     if (isEmpty) {
       setIsEmpty(false);

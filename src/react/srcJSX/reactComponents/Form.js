@@ -49,7 +49,7 @@ const Form = function () {
     }
   };
 
-  // on empty valid again untel submition
+  // on empty valid again stop submition
   useEffect(() => {
     if (isEmpty) {
       setIsEmpty(false);

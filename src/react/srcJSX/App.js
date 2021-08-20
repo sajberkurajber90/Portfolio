@@ -21,7 +21,7 @@ function App() {
             <Form />
           </Home>
         </Route>
-        <Route path="/Home/:citys">
+        <Route path="/Home/:cities">
           <Results />
         </Route>
         <Route path="*">

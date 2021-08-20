@@ -16,7 +16,6 @@ var InputCheckBox = function InputCheckBox(props) {
 
   var checkedHandler = function checkedHandler() {
     setIsChecked(function (prev) {
-      console.log('setChange', prev);
       return !prev;
     });
   };

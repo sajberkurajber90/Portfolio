@@ -29,25 +29,34 @@ var Results = function Results() {
       replaceHistory = _useSelector.replaceHistory,
       currentUrl = _useSelector.currentUrl,
       inputSource = _useSelector.inputSource,
-      modalHidden = _useSelector.modalHidden;
+      modalHidden = _useSelector.modalHidden,
+      errorLocation = _useSelector.errorLocation,
+      onClickLocation = _useSelector.onClickLocation;
 
   // on refreash
 
 
   var _useParams = useParams(),
-      urlData = _useParams.citys;
+      urlData = _useParams.cities;
+  // filter url data
 
-  var urlLen = urlData.split('+').length; // url form the url bar
-  var urlArr = [].concat(_toConsumableArray(new Set(urlData.split('+')))); // unique values
+
+  urlData = urlData.split('+').filter(function (element) {
+    return !errorLocation.includes(element);
+  });
+  // console.log('URLDATA: ', urlData);
+  var urlLen = urlData.length; // url form the url bar
+  var urlArr = [].concat(_toConsumableArray(new Set(urlData))); // unique values w
   var isDuplicate = urlArr.length !== urlLen; // on duplicates replace history
+
   // update url
   useEffect(function () {
     if (replaceHistory || isDuplicate) {
-      console.log('REPLACING HISTORY');
+      // console.log('REPLACING HISTORY');
       historyHook.replace(isDuplicate ? '/Home/' + urlArr.join('+') : '/Home/' + currentUrl.join('+'));
     }
     if (!replaceHistory && inputSource) {
-      console.log('PUSHING HISTORY');
+      // console.log('PUSHING HISTORY');
       historyHook.push('/Home/' + currentUrl.join('+'));
     }
   }, [currentUrl.join('+'), isDuplicate]);
@@ -55,7 +64,7 @@ var Results = function Results() {
   // on manual url update and refreash
   useEffect(function () {
     if (!inputSource) {
-      console.log('UPDATING CURRENT URL');
+      // console.log('UPDATING CURRENT URL');
 
       dispatch({
         type: 'ALL_INPUTS',
@@ -90,7 +99,9 @@ var Results = function Results() {
       React.createElement(Cards, {
         currentWeather: currentWeather,
         width: width,
-        currentUrl: currentUrl
+        currentUrl: currentUrl,
+        errorLocation: errorLocation,
+        onClickLocation: onClickLocation
       }),
       React.createElement(Chart5Days, null)
     ),

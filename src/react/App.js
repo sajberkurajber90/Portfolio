@@ -32,7 +32,7 @@ function App() {
       ),
       React.createElement(
         Route,
-        { path: '/Home/:citys' },
+        { path: '/Home/:cities' },
         React.createElement(Results, null)
       ),
       React.createElement(

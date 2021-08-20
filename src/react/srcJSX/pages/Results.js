@@ -25,19 +25,27 @@ const Results = function () {
     currentUrl,
     inputSource,
     modalHidden,
+    errorLocation,
+    onClickLocation,
   } = useSelector(state => {
     return state;
   });
 
   // on refreash
-  const { citys: urlData } = useParams();
-  const urlLen = urlData.split('+').length; // url form the url bar
-  const urlArr = [...new Set(urlData.split('+'))]; // unique values
+  let { cities: urlData } = useParams();
+  // filter url data
+  urlData = urlData.split('+').filter(element => {
+    return !errorLocation.includes(element);
+  });
+  // console.log('URLDATA: ', urlData);
+  const urlLen = urlData.length; // url form the url bar
+  const urlArr = [...new Set(urlData)]; // unique values w
   const isDuplicate = urlArr.length !== urlLen; // on duplicates replace history
+
   // update url
   useEffect(() => {
     if (replaceHistory || isDuplicate) {
-      console.log('REPLACING HISTORY');
+      // console.log('REPLACING HISTORY');
       historyHook.replace(
         isDuplicate
           ? `/Home/${urlArr.join('+')}`
@@ -45,7 +53,7 @@ const Results = function () {
       );
     }
     if (!replaceHistory && inputSource) {
-      console.log('PUSHING HISTORY');
+      // console.log('PUSHING HISTORY');
       historyHook.push(`/Home/${currentUrl.join('+')}`);
     }
   }, [currentUrl.join('+'), isDuplicate]);
@@ -53,7 +61,7 @@ const Results = function () {
   // on manual url update and refreash
   useEffect(() => {
     if (!inputSource) {
-      console.log('UPDATING CURRENT URL');
+      // console.log('UPDATING CURRENT URL');
 
       dispatch({
         type: 'ALL_INPUTS',
@@ -83,6 +91,8 @@ const Results = function () {
           currentWeather={currentWeather}
           width={width}
           currentUrl={currentUrl}
+          errorLocation={errorLocation}
+          onClickLocation={onClickLocation}
         />
         <Chart5Days />
       </DashBoard>

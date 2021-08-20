@@ -10,7 +10,6 @@ const InputCheckBox = function (props) {
   const [isChecked, setIsChecked] = useState(false);
   const checkedHandler = function () {
     setIsChecked(prev => {
-      console.log('setChange', prev);
       return !prev;
     });
   };
