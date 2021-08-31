@@ -1,0 +1,65 @@
+.FormToggleBtn {
+  position: relative;
+  display: inline-block;
+  width: 5rem;
+  height: 2.8rem;
+}
+
+.FormToggleBtn__input {
+  opacity: 0;
+  width: 0rem;
+  height: 0rem;
+}
+
+.FormToggleBtn__slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-primary);
+  transition: 0.4s;
+  border-radius: 2rem;
+}
+.FormToggleBtn__slider p {
+  position: absolute;
+  margin: 0;
+  transform: translate(50%, -50%);
+  top: 50%;
+  left: -10%;
+  width: 2rem;
+  font-size: 1.5rem;
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+.FormToggleBtn__slider:before {
+  position: absolute;
+  content: '';
+  height: 2rem;
+  width: 2rem;
+  left: 0.4rem;
+  bottom: 0.4rem;
+  background-color: var(--color-secondary);
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.FormToggleBtn__slider:after {
+  position: absolute;
+  display: block;
+  content: '\00b0 C';
+  transform: translate(50%, -50%);
+  top: 50%;
+  right: 28%;
+  width: 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-secondary);
+  transition: 0.4s;
+}
+
+.FormToggleBtn__input:checked + .FormToggleBtn__slider:before {
+  transform: translateX(2.2rem);
+}

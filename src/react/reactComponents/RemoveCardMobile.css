@@ -1,0 +1,16 @@
+.RemoveCardMobile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 8rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  background-color: #f4afc2;
+}
+
+.RemoveCardMobile__Icon {
+  fill: #685d79;
+  transition: opacity 0.2s ease-in-out;
+}

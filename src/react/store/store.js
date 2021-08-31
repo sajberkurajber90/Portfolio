@@ -10,6 +10,8 @@ const initState = {
   inputSource: false,
   modalHidden: true,
   errorLocation: [],
+  convertTempUnit: false,
+  forecast: [],
 };
 
 // the following is handeled in the store:
@@ -18,7 +20,7 @@ const initState = {
 // - url update on error
 // - modal for not displayed cities
 // - error handling
-// - Chard handling
+// - Chart handling
 
 const reducer = function (state = initState, action) {
   switch (action.type) {
@@ -33,6 +35,8 @@ const reducer = function (state = initState, action) {
         inputSource: state.inputSource, // is event comming from home input field or manual url update
         modalHidden: state.modalHidden, // logic for showing and hidding modal
         errorLocation: [...state.errorLocation], // list of the error queryies
+        convertTempUnit: state.convertTempUnit, // flag for converting celsius to fahrenheit
+        forecast: [...state.forecast], // 5 day forecast
       };
 
     case 'ALL_INPUTS':
@@ -48,6 +52,8 @@ const reducer = function (state = initState, action) {
         inputSource: action.source ? action.source : false,
         modalHidden: state.modalHidden,
         errorLocation: [...state.errorLocation],
+        convertTempUnit: state.convertTempUnit,
+        forecast: [...state.forecast],
       };
 
     case 'RESIZE': {
@@ -61,6 +67,8 @@ const reducer = function (state = initState, action) {
         inputSource: state.inputSource,
         modalHidden: state.modalHidden,
         errorLocation: [...state.errorLocation],
+        convertTempUnit: state.convertTempUnit,
+        forecast: [...state.forecast],
       };
     }
 
@@ -103,6 +111,8 @@ const reducer = function (state = initState, action) {
         inputSource: false,
         modalHidden: state.modalHidden,
         errorLocation: [...state.errorLocation],
+        convertTempUnit: state.convertTempUnit,
+        forecast: [...state.forecast],
       };
 
     case 'MODAL':
@@ -116,6 +126,8 @@ const reducer = function (state = initState, action) {
         inputSource: state.inputSource,
         modalHidden: action.payload,
         errorLocation: [...state.errorLocation],
+        convertTempUnit: state.convertTempUnit,
+        forecast: [...state.forecast],
       };
 
     case 'ERROR':
@@ -144,6 +156,8 @@ const reducer = function (state = initState, action) {
         inputSource: false,
         modalHidden: state.modalHidden,
         errorLocation: action.clear ? [] : [...errorLocation],
+        convertTempUnit: state.convertTempUnit,
+        forecast: [...state.forecast],
       };
 
     case 'ON_CARD_CLICK':
@@ -157,6 +171,38 @@ const reducer = function (state = initState, action) {
         inputSource: false,
         modalHidden: state.modalHidden,
         errorLocation: [...state.errorLocation],
+        convertTempUnit: state.convertTempUnit,
+        forecast: [...state.forecast],
+      };
+
+    case 'ALL_5_DAYS_FORECAST':
+      return {
+        input: state.input,
+        winWidth: state.winWidth,
+        currentWeather: [...state.currentWeather],
+        onClickLocation: state.onClickLocation,
+        currentUrl: [...state.currentUrl],
+        replaceHistory: false,
+        inputSource: false,
+        modalHidden: state.modalHidden,
+        errorLocation: [...state.errorLocation],
+        convertTempUnit: state.convert,
+        forecast: [...state.forecast, action.payload],
+      };
+
+    case 'CONVERT_TEMP':
+      return {
+        input: state.input,
+        winWidth: state.winWidth,
+        currentWeather: [...state.currentWeather],
+        onClickLocation: state.onClickLocation,
+        currentUrl: [...state.currentUrl],
+        replaceHistory: false,
+        inputSource: false,
+        modalHidden: state.modalHidden,
+        errorLocation: [...state.errorLocation],
+        convertTempUnit: action.convert,
+        forecast: [...state.forecast],
       };
 
     default:

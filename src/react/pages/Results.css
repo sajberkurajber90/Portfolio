@@ -13,8 +13,23 @@
   padding-left: 2rem;
   width: 100%;
   color: white;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
   font-size: 4rem;
+}
+
+.Results__toggle {
+  display: inline-flex;
+  width: 35rem;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.Results__toggle p {
+  margin: 0;
+  color: white;
+  font-size: 1.4rem;
 }
 
 @media screen and (min-width: 1100) {

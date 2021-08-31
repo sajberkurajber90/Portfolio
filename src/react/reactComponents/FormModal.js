@@ -28,7 +28,7 @@ var FormModal = function FormModal(props) {
   var onSubmitionHandler = function onSubmitionHandler(event) {
     event.preventDefault();
     // transform NodeList of checked cities to array
-    var values = Array.from(document.querySelectorAll('input[type=checkbox]:checked')).map(function (element) {
+    var values = Array.from(document.querySelector('.FormModal').querySelectorAll('input[type=checkbox]:checked')).map(function (element) {
       return element.value;
     });
     // update history based on checked cities

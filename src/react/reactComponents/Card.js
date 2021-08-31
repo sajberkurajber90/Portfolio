@@ -6,10 +6,14 @@ import useHttp from '../hooks/use-http';
 import { useEffect, useRef } from 'react';
 import './Card.css';
 import { getCurrentWeather } from '../../helper/urls';
+import { celsiusToFahrenheit } from '../../helper/tempConverter';
 import CloseIcon from './CloseIcon';
 import { useHistory } from 'react-router-dom';
 import LoadingSpinner from './LoadingSpinner';
 import WeatherIcons from './WeatherIcons';
+import localTimeConversion from '../../helper/localTimeConversion';
+import useSwipe from '../hooks/use-swipe';
+import RemoveCardMobile from './RemoveCardMobile';
 
 var Card = function Card(props) {
   // props decomposition
@@ -20,7 +24,9 @@ var Card = function Card(props) {
   var currentUrl = props.currentUrl; // current url
   var errorLocation = props.errorLocation; // error locations
   var isError = errorLocation.includes(city); // if true don't fatch on mount
-  var onClickLocation = props.onClickLocation;
+  var onClickLocation = props.onClickLocation; // clicked card
+  var convertTempUnit = props.convertTempUnit; // flag for converting temp units
+  var cardId = props.id; // elementId
 
   // custom http-hook
 
@@ -29,6 +35,18 @@ var Card = function Card(props) {
       errorHttp = _useHttp.error,
       sendRequest = _useHttp.sendRequest,
       errorHandler = _useHttp.errorHandler;
+  // custom swipe-hook for mobile/tablet devices
+
+
+  var _useSwipe = useSwipe(),
+      cardRelativeXPos = _useSwipe.cardRelativeXPos,
+      isCardInPos = _useSwipe.isCardInPos,
+      isTapped = _useSwipe.isTapped,
+      onTouchStart = _useSwipe.onTouchStart,
+      onTouchEnd = _useSwipe.onTouchEnd,
+      onTouchMove = _useSwipe.onTouchMove,
+      setIsCardInPos = _useSwipe.setIsCardInPos,
+      onTapHandler = _useSwipe.onTapHandler;
   // dispatch fun
 
 
@@ -69,9 +87,9 @@ var Card = function Card(props) {
   };
   // console.log('CURRENT WEATHER: ', currentweather);
 
-  var _ref = currentweather ? currentweather.filter(function (element) {
+  var _ref = currentweather.length ? currentweather.filter(function (element) {
     return element.name.includes(city);
-  }) : false,
+  }) : [false],
       _ref2 = _slicedToArray(_ref, 1),
       data = _ref2[0];
   // fetching data
@@ -126,7 +144,12 @@ var Card = function Card(props) {
       var newUrl = currentUrl.filter(function (element) {
         return element !== city;
       });
-      historyHook.push('/Home/' + newUrl.join('+'));
+      if (newUrl.length) {
+        historyHook.push('/Home/' + newUrl.join('+'));
+      } else {
+        var dispatchObj = { type: 'ALL_INPUTS', payload: [], source: true };
+        dispatch(dispatchObj);
+      }
     }
   };
   // console.log(
@@ -192,7 +215,8 @@ var Card = function Card(props) {
       {
         style: cardStyle,
         onClick: cardClickHandler,
-        className: 'Card Card--color'
+        className: 'Card Card--color',
+        id: cardId
       },
       React.createElement(
         'p',
@@ -212,7 +236,7 @@ var Card = function Card(props) {
       data && React.createElement(
         'p',
         { className: 'Card__temp' },
-        data && data.temp.toFixed(1) + '\xB0' + 'C'
+        data && !convertTempUnit ? data.temp.toFixed(1) + '\xB0' + 'C' : +celsiusToFahrenheit(data.temp).toFixed(1) + '\xB0' + 'F'
       ),
       (isLoading || !data) && !errorHttp ? React.createElement(LoadingSpinner, { marginTop: 5, className: 'LoadingSpinner-desktop' }) : null,
       data && React.createElement(
@@ -255,7 +279,7 @@ var Card = function Card(props) {
         React.createElement(
           'p',
           { className: 'Card__state' },
-          data.country
+          localTimeConversion(data.timezone)
         ),
         React.createElement(CloseIcon, {
           className: 'Card__close',
@@ -265,13 +289,24 @@ var Card = function Card(props) {
       )
     );
   }
+
   // MOBILE LAYOUT
   else {
-      var style = data ? {} : { justifyContent: 'center' };
+      var style = data ? {} : {
+        justifyContent: 'center'
+      };
       var styleErrorMsg = { margin: '0', fontSize: '2rem' };
       layout = React.createElement(
         'div',
-        { style: style, className: 'Card Card--color' },
+        {
+          onClick: onTapHandler,
+          onTouchMove: onTouchMove,
+          onTouchEnd: onTouchEnd,
+          onTouchStart: onTouchStart,
+          style: style,
+          className: 'Card Card--color',
+          id: cardId
+        },
         (errorHttp || isError) && React.createElement(
           'p',
           { style: styleErrorMsg },
@@ -294,17 +329,28 @@ var Card = function Card(props) {
         ),
         data && React.createElement(
           'div',
-          { className: 'Card__box' },
+          { className: 'Card__RemoveMobile' },
           React.createElement(
-            'p',
-            { className: 'Card__temp' },
-            data.temp.toFixed(1) + '\xB0' + 'C'
+            'div',
+            { className: 'Card__box' },
+            React.createElement(
+              'p',
+              { className: 'Card__temp' },
+              data && !convertTempUnit ? data.temp.toFixed(1) + '\xB0' + 'C' : +celsiusToFahrenheit(data.temp).toFixed(1) + '\xB0' + 'F'
+            ),
+            React.createElement(
+              'p',
+              { className: 'Card__time' },
+              localTimeConversion(data.timezone)
+            )
           ),
-          React.createElement(
-            'p',
-            { className: 'Card__time' },
-            'time'
-          )
+          React.createElement(RemoveCardMobile, {
+            width: cardRelativeXPos,
+            isCardInPos: isCardInPos,
+            setIsCardInPos: setIsCardInPos,
+            currentUrl: currentUrl,
+            city: city
+          })
         )
       );
     }

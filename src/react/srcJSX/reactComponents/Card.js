@@ -4,10 +4,14 @@ import useHttp from '../hooks/use-http';
 import { useEffect, useRef } from 'react';
 import './Card.css';
 import { getCurrentWeather } from '../../helper/urls';
+import { celsiusToFahrenheit } from '../../helper/tempConverter';
 import CloseIcon from './CloseIcon';
 import { useHistory } from 'react-router-dom';
 import LoadingSpinner from './LoadingSpinner';
 import WeatherIcons from './WeatherIcons';
+import localTimeConversion from '../../helper/localTimeConversion';
+import useSwipe from '../hooks/use-swipe';
+import RemoveCardMobile from './RemoveCardMobile';
 
 const Card = function (props) {
   // props decomposition
@@ -18,10 +22,23 @@ const Card = function (props) {
   const currentUrl = props.currentUrl; // current url
   const errorLocation = props.errorLocation; // error locations
   const isError = errorLocation.includes(city); // if true don't fatch on mount
-  const onClickLocation = props.onClickLocation;
+  const onClickLocation = props.onClickLocation; // clicked card
+  const convertTempUnit = props.convertTempUnit; // flag for converting temp units
+  const cardId = props.id; // elementId
 
   // custom http-hook
   const { isLoading, error: errorHttp, sendRequest, errorHandler } = useHttp();
+  // custom swipe-hook for mobile/tablet devices
+  const {
+    cardRelativeXPos,
+    isCardInPos,
+    isTapped,
+    onTouchStart,
+    onTouchEnd,
+    onTouchMove,
+    setIsCardInPos,
+    onTapHandler,
+  } = useSwipe();
   // dispatch fun
   const dispatch = useDispatch();
   // is mounted ref
@@ -55,11 +72,11 @@ const Card = function (props) {
       : '';
   };
   // console.log('CURRENT WEATHER: ', currentweather);
-  const [data] = currentweather
+  const [data] = currentweather.length
     ? currentweather.filter(element => {
         return element.name.includes(city);
       })
-    : false;
+    : [false];
   // fetching data
   useEffect(() => {
     isMountedRef.current = true;
@@ -113,7 +130,12 @@ const Card = function (props) {
       const newUrl = currentUrl.filter(element => {
         return element !== city;
       });
-      historyHook.push(`/Home/${newUrl.join('+')}`);
+      if (newUrl.length) {
+        historyHook.push(`/Home/${newUrl.join('+')}`);
+      } else {
+        const dispatchObj = { type: 'ALL_INPUTS', payload: [], source: true };
+        dispatch(dispatchObj);
+      }
     }
   };
   // console.log(
@@ -189,13 +211,16 @@ const Card = function (props) {
         style={cardStyle}
         onClick={cardClickHandler}
         className={`Card Card--color`}
+        id={cardId}
       >
         <p className={'Card__heading'}>{data ? data.name : city}</p>
         {(errorHttp || isError) && <p>{errorHttp}</p>}
         {data && <p className={'Card__description'}>{data.description}</p>}
         {data && (
           <p className={'Card__temp'}>
-            {data && data.temp.toFixed(1) + '\u00b0' + 'C'}
+            {data && !convertTempUnit
+              ? data.temp.toFixed(1) + '\u00b0' + 'C'
+              : +celsiusToFahrenheit(data.temp).toFixed(1) + '\u00b0' + 'F'}
           </p>
         )}
         {(isLoading || !data) && !errorHttp ? (
@@ -219,7 +244,7 @@ const Card = function (props) {
         )}
         {data && (
           <div className="Card__box">
-            <p className="Card__state">{data.country}</p>
+            <p className="Card__state">{localTimeConversion(data.timezone)}</p>
             <CloseIcon
               className="Card__close"
               onClick={removeCardHandler}
@@ -230,12 +255,25 @@ const Card = function (props) {
       </div>
     );
   }
+
   // MOBILE LAYOUT
   else {
-    const style = data ? {} : { justifyContent: 'center' };
+    const style = data
+      ? {}
+      : {
+          justifyContent: 'center',
+        };
     const styleErrorMsg = { margin: '0', fontSize: '2rem' };
     layout = (
-      <div style={style} className={`Card Card--color`}>
+      <div
+        onClick={onTapHandler}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        onTouchStart={onTouchStart}
+        style={style}
+        className={`Card Card--color`}
+        id={cardId}
+      >
         {(errorHttp || isError) && <p style={styleErrorMsg}>{errorHttp}</p>}
         {(isLoading || !data) && !errorHttp ? (
           <LoadingSpinner marginTop={0} className="LoadingSpinner-mobile" />
@@ -247,11 +285,22 @@ const Card = function (props) {
           </div>
         )}
         {data && (
-          <div className={'Card__box'}>
-            <p className={'Card__temp'}>
-              {data.temp.toFixed(1) + '\u00b0' + 'C'}
-            </p>
-            <p className="Card__time">{'time'}</p>
+          <div className={'Card__RemoveMobile'}>
+            <div className={'Card__box'}>
+              <p className={'Card__temp'}>
+                {data && !convertTempUnit
+                  ? data.temp.toFixed(1) + '\u00b0' + 'C'
+                  : +celsiusToFahrenheit(data.temp).toFixed(1) + '\u00b0' + 'F'}
+              </p>
+              <p className="Card__time">{localTimeConversion(data.timezone)}</p>
+            </div>
+            <RemoveCardMobile
+              width={cardRelativeXPos}
+              isCardInPos={isCardInPos}
+              setIsCardInPos={setIsCardInPos}
+              currentUrl={currentUrl}
+              city={city}
+            />
           </div>
         )}
       </div>

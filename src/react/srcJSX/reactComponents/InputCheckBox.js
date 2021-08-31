@@ -14,7 +14,7 @@ const InputCheckBox = function (props) {
     });
   };
 
-  console.log(`isChecked ${city}`, isChecked);
+  // console.log(`isChecked ${city}`, isChecked);
 
   // on successful submition clear the checkboxes
   useEffect(() => {

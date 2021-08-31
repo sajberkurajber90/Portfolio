@@ -13,6 +13,7 @@ export default function Cards(props) {
   var currentUrl = props.currentUrl;
   var errorLocation = props.errorLocation;
   var onClickLocation = props.onClickLocation;
+  var convertTempUnit = props.convertTempUnit;
   // dispatch
   var dispatch = useDispatch();
   var isMountedRef = useRef(null);
@@ -36,6 +37,7 @@ export default function Cards(props) {
   var results = void 0;
   currentUrl.length === 0 ? results = null : results = currentUrl.map(function (item, index) {
     return React.createElement(Card, {
+      id: 'Card-' + item,
       key: index,
       city: item,
       delay: index,
@@ -43,14 +45,14 @@ export default function Cards(props) {
       errorLocation: errorLocation,
       currentUrl: currentUrl,
       width: width,
-      onClickLocation: onClickLocation
+      onClickLocation: onClickLocation,
+      convertTempUnit: convertTempUnit
     });
   });
 
   return React.createElement(
     'div',
     { className: 'Cards' },
-    ' ',
     results
   );
 }

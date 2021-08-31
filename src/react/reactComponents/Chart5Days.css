@@ -5,13 +5,58 @@
   .Chart5Days {
     background-color: var(--color-secondary);
     color: var(--color-primary);
-    min-width: 50rem;
-    min-height: 50rem;
-    display: block;
-    flex-grow: 1;
+    min-width: 70rem;
+    max-width: 80rem;
+    height: 50rem;
+    display: flex;
     border: none;
     border-radius: 2rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    flex-direction: column;
+  }
+
+  .Chart5Days__header {
+    margin: 1rem 2.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .Chart5Days__header h1 {
+    height: 3rem;
+  }
+  .Chart {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+  }
+
+  .Chart__title {
+    margin: 1rem;
+  }
+
+  .Chart-no-Data {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .Chart__days {
+    height: 5rem;
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
   }
 }

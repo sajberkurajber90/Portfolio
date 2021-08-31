@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormResults from '../reactComponents/FormResults';
 import DashBoard from '../reactComponents/DashBoard';
 import ModalLoadedCities from '../reactComponents/ModalLoadedCities';
+import InputToggleBtn from '../reactComponents/InputToggleBtn';
 
 const Results = function () {
   const today = new Date().toLocaleDateString('en-us', {
@@ -27,9 +28,13 @@ const Results = function () {
     modalHidden,
     errorLocation,
     onClickLocation,
+    convertTempUnit,
+    forecast,
   } = useSelector(state => {
     return state;
   });
+
+  // console.log('CONVERT TEMP: ', convertTempUnit);
 
   // on refreash
   let { cities: urlData } = useParams();
@@ -86,6 +91,12 @@ const Results = function () {
           width={width}
         />
       )}
+      {width <= 1100 && (
+        <div className="Results__toggle">
+          <p>Swipe a card to left to remove it</p>
+          <InputToggleBtn />
+        </div>
+      )}
       <DashBoard>
         <Cards
           currentWeather={currentWeather}
@@ -93,8 +104,13 @@ const Results = function () {
           currentUrl={currentUrl}
           errorLocation={errorLocation}
           onClickLocation={onClickLocation}
+          convertTempUnit={convertTempUnit}
         />
-        <Chart5Days />
+        <Chart5Days
+          onClickLocation={onClickLocation}
+          convertTempUnit={convertTempUnit}
+          forecast={forecast}
+        />
       </DashBoard>
       {width <= 1100 && (
         <FormResults

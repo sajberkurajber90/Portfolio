@@ -31,7 +31,9 @@ const FormModal = function (props) {
     event.preventDefault();
     // transform NodeList of checked cities to array
     const values = Array.from(
-      document.querySelectorAll('input[type=checkbox]:checked')
+      document
+        .querySelector('.FormModal')
+        .querySelectorAll('input[type=checkbox]:checked')
     ).map(element => {
       return element.value;
     });

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormResults from '../reactComponents/FormResults';
 import DashBoard from '../reactComponents/DashBoard';
 import ModalLoadedCities from '../reactComponents/ModalLoadedCities';
+import InputToggleBtn from '../reactComponents/InputToggleBtn';
 
 var Results = function Results() {
   var today = new Date().toLocaleDateString('en-us', {
@@ -31,7 +32,11 @@ var Results = function Results() {
       inputSource = _useSelector.inputSource,
       modalHidden = _useSelector.modalHidden,
       errorLocation = _useSelector.errorLocation,
-      onClickLocation = _useSelector.onClickLocation;
+      onClickLocation = _useSelector.onClickLocation,
+      convertTempUnit = _useSelector.convertTempUnit,
+      forecast = _useSelector.forecast;
+
+  // console.log('CONVERT TEMP: ', convertTempUnit);
 
   // on refreash
 
@@ -93,6 +98,16 @@ var Results = function Results() {
       currentWeather: currentWeather,
       width: width
     }),
+    width <= 1100 && React.createElement(
+      'div',
+      { className: 'Results__toggle' },
+      React.createElement(
+        'p',
+        null,
+        'Swipe a card to left to remove it'
+      ),
+      React.createElement(InputToggleBtn, null)
+    ),
     React.createElement(
       DashBoard,
       null,
@@ -101,9 +116,14 @@ var Results = function Results() {
         width: width,
         currentUrl: currentUrl,
         errorLocation: errorLocation,
-        onClickLocation: onClickLocation
+        onClickLocation: onClickLocation,
+        convertTempUnit: convertTempUnit
       }),
-      React.createElement(Chart5Days, null)
+      React.createElement(Chart5Days, {
+        onClickLocation: onClickLocation,
+        convertTempUnit: convertTempUnit,
+        forecast: forecast
+      })
     ),
     width <= 1100 && React.createElement(FormResults, {
       input: input,

@@ -13,6 +13,7 @@ export default function Cards(props) {
   const currentUrl = props.currentUrl;
   const errorLocation = props.errorLocation;
   const onClickLocation = props.onClickLocation;
+  const convertTempUnit = props.convertTempUnit;
   // dispatch
   const dispatch = useDispatch();
   const isMountedRef = useRef(null);
@@ -41,6 +42,7 @@ export default function Cards(props) {
     : (results = currentUrl.map((item, index) => {
         return (
           <Card
+            id={`Card-${item}`}
             key={index}
             city={item}
             delay={index}
@@ -49,9 +51,10 @@ export default function Cards(props) {
             currentUrl={currentUrl}
             width={width}
             onClickLocation={onClickLocation}
+            convertTempUnit={convertTempUnit}
           />
         );
       }));
 
-  return <div className="Cards"> {results}</div>;
+  return <div className="Cards">{results}</div>;
 }

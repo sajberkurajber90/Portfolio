@@ -1,0 +1,11 @@
+.DayCard {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2rem;
+  cursor: pointer;
+}
