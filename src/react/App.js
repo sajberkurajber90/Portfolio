@@ -7,7 +7,6 @@ import Home from './pages/Home';
 import Results from './pages/Results';
 import NotFound from './pages/NotFound';
 import WindowSize from './reactComponents/WindowSize';
-import KeyPress from './reactComponents/KeyPress';
 
 function App() {
   return React.createElement(
@@ -41,8 +40,7 @@ function App() {
         React.createElement(NotFound, null)
       )
     ),
-    React.createElement(WindowSize, null),
-    React.createElement(KeyPress, null)
+    React.createElement(WindowSize, null)
   );
 }
 

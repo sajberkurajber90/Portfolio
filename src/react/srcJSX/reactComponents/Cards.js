@@ -14,8 +14,10 @@ export default function Cards(props) {
   const errorLocation = props.errorLocation;
   const onClickLocation = props.onClickLocation;
   const convertTempUnit = props.convertTempUnit;
+  const forecast = props.forecast;
   // dispatch
   const dispatch = useDispatch();
+  // unmount guard
   const isMountedRef = useRef(null);
 
   // clear error arr
@@ -42,8 +44,8 @@ export default function Cards(props) {
     : (results = currentUrl.map((item, index) => {
         return (
           <Card
-            id={`Card-${item}`}
-            key={index}
+            id={item}
+            key={item}
             city={item}
             delay={index}
             currentWeather={currentWeather}
@@ -52,9 +54,10 @@ export default function Cards(props) {
             width={width}
             onClickLocation={onClickLocation}
             convertTempUnit={convertTempUnit}
+            forecast={forecast}
           />
         );
       }));
 
-  return <div className="Cards">{results}</div>;
+  return <div className={`Cards`}>{results}</div>;
 }

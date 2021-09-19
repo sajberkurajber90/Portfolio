@@ -73,27 +73,15 @@ const reducer = function (state = initState, action) {
     }
 
     case 'ALL_CURRENT':
-      // repalce city name with correct one
       let currentUrl = [...state.currentUrl];
       const city = action.city;
       let replaceHistory = false;
       if (city !== action.current.name) {
+        //
         const index = currentUrl.indexOf(city);
-        console.log(index);
+        // different input yielding the same result
         index > -1 ? (currentUrl[index] = action.current.name) : '';
-        replaceHistory = true;
-      }
-
-      // different input same result - remove input from url
-      const isIncluding = state.currentWeather
-        .map(element => element.id)
-        .includes(action.current.id);
-
-      // exclude from url the results which yild sam result
-      if (isIncluding) {
-        currentUrl = currentUrl.filter(element => {
-          return element !== city;
-        });
+        currentUrl = [...new Set(currentUrl)];
         replaceHistory = true;
       }
 
@@ -101,8 +89,8 @@ const reducer = function (state = initState, action) {
         input: state.input,
         winWidth: state.winWidth,
         currentWeather: state.currentWeather
-          .map(element => element.id)
-          .includes(action.current.id)
+          .map(element => element.name)
+          .includes(action.current.name)
           ? [...state.currentWeather]
           : [...state.currentWeather, action.current],
         onClickLocation: state.onClickLocation,
@@ -186,7 +174,7 @@ const reducer = function (state = initState, action) {
         inputSource: false,
         modalHidden: state.modalHidden,
         errorLocation: [...state.errorLocation],
-        convertTempUnit: state.convert,
+        convertTempUnit: state.convertTempUnit,
         forecast: [...state.forecast, action.payload],
       };
 
@@ -202,6 +190,21 @@ const reducer = function (state = initState, action) {
         modalHidden: state.modalHidden,
         errorLocation: [...state.errorLocation],
         convertTempUnit: action.convert,
+        forecast: [...state.forecast],
+      };
+
+    case 'RESET':
+      return {
+        input: state.input,
+        winWidth: state.winWidth,
+        currentWeather: [...state.currentWeather],
+        onClickLocation: state.onClickLocation,
+        currentUrl: [...state.currentUrl],
+        replaceHistory: false,
+        inputSource: false,
+        modalHidden: state.modalHidden,
+        errorLocation: [...state.errorLocation],
+        convertTempUnit: state.convertTempUnit,
         forecast: [...state.forecast],
       };
 

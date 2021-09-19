@@ -14,11 +14,19 @@ const Chart5Days = function (props) {
   const onClickLocation = props.onClickLocation;
   const convertTempUnit = props.convertTempUnit;
   const forecast = props.forecast;
+  const width = props.width;
   // state
+
+  // disable day clicks during the animation
+  const [disableClick, setDisableClick] = useState(null);
+
   const [clickedDay, setClickedDay] = useState(null);
   const clickDayHandler = function (click) {
     setClickedDay(click);
   };
+
+  // reset flag - isCardChanged after card change by inducing a render
+  const [reRender, setReRender] = useState(false);
 
   // custom http hooks
   const { isLoading, error: errorHttp, sendRequest, errorHandler } = useHttp();
@@ -56,7 +64,6 @@ const Chart5Days = function (props) {
   useEffect(() => {
     isMountedRef.current = true;
     if (onClickLocation === '' || isFetched || errorHttp) {
-      console.log('Loading CHART');
     } else {
       const locationUrl = get5DaysForecast(onClickLocation);
       sendRequest(locationUrl, dataTransform, isMountedRef);
@@ -95,10 +102,10 @@ const Chart5Days = function (props) {
     };
   }, [errorHttp]);
 
-  // layout for error or empty
+  // layout for error / empty
   const layoutEmpty = (
     <div className="Chart-no-Data">
-      <p>Please click on card to display 40 hours forecast</p>
+      <p>Click on a card to display 40 hours forecast</p>
     </div>
   );
   // error layout
@@ -116,22 +123,25 @@ const Chart5Days = function (props) {
     : [false];
 
   // isCardChanged
-  const isCardChanged = locationRef.current !== onClickLocation;
+  const isCardChanged =
+    onClickLocation === '' ? false : locationRef.current !== onClickLocation;
   if (isCardChanged && isFetched) locationRef.current = onClickLocation;
-
   // set the day on load
   useEffect(() => {
-    console.log('EFFECT');
-    isFetched && onClickLocation !== ''
-      ? setClickedDay(layoutDays.days[0])
-      : '';
-  }, [onClickLocation, isFetched]);
+    if (isFetched && onClickLocation !== '') {
+      isCardChanged ? setClickedDay(layoutDays.days[0]) : '';
+      isCardChanged &&
+        setReRender(prev => {
+          return !prev;
+        });
+    }
+  }, [onClickLocation, isFetched, reRender]);
   // ######################################################
   return (
     <div className="Chart5Days" id={'chart'}>
       <div className="Chart5Days__header">
         <h1>{onClickLocation !== '' && !errorHttp ? onClickLocation : ''}</h1>
-        <InputToggleBtn />
+        <InputToggleBtn width={width} convertTempUnit={convertTempUnit} />
       </div>
       {onClickLocation !== '' && !errorHttp ? (
         <Fragment>
@@ -140,6 +150,7 @@ const Chart5Days = function (props) {
               ? layoutDays.days.map((item, index) => {
                   return (
                     <DayCard
+                      onClickLocation={onClickLocation}
                       key={index}
                       day={item}
                       onClick={clickDayHandler}
@@ -153,7 +164,6 @@ const Chart5Days = function (props) {
                 })
               : null}
           </div>
-          {/* <p className="Chart__title">5 days weather forecast</p> */}
           <div className="Chart">
             <LineChart
               isLoading={isLoading}
@@ -163,6 +173,7 @@ const Chart5Days = function (props) {
               clickedDay={
                 isCardChanged && isFetched ? layoutDays.days[0] : clickedDay
               }
+              isCardChanged={isCardChanged}
             />
           </div>
         </Fragment>

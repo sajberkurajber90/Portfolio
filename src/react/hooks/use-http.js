@@ -27,7 +27,6 @@ const useHttp = function () {
     } catch (e) {
       // add no network handler
       setError(e.message || 'Something went wrong - Please try again');
-      console.log(e.message);
     }
     setIsLoading(false);
   },

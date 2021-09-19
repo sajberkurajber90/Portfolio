@@ -1,15 +1,15 @@
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Button from './Button';
 import './FormModal.css';
 import InputCheckBox from './InputCheckBox';
 
 const FormModal = function (props) {
+  // props
   const currentWeather = props.currentWeather;
   const currentUrl = props.currentUrl;
+  const removeModalHandler = props.removeModalHandler;
 
   const historyHook = useHistory();
-  const dispatch = useDispatch();
 
   // filter for non displayed cities
   const notDisplayed = currentWeather.filter(city => {
@@ -42,14 +42,14 @@ const FormModal = function (props) {
       historyHook.push(`/Home/${currentUrl.join('+')}+${values.join('+')}`);
     }
     // close modal on submition
-    dispatch({ type: 'MODAL', payload: true });
+    removeModalHandler();
   };
 
   return (
     <form onSubmit={onSubmitionHandler} className={'FormModal'}>
       <div className={'FormModal__Inputs'}>
         {checkBox.length === 0 ? (
-          <h2 className="FormModal__msg">All fathced cities are displayed</h2>
+          <h2 className="FormModal__msg">All fethced cities are displayed</h2>
         ) : (
           checkBox
         )}

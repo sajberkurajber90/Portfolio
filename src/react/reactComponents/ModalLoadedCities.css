@@ -10,10 +10,8 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.6);
-}
-
-.ModalLoadedCities--hidden {
-  display: none;
+  animation: back-drop-open 0.5s ease-in-out;
+  animation-fill-mode: forwards;
 }
 
 .Modal {
@@ -26,13 +24,16 @@
   max-width: 35rem;
   border-radius: 2rem;
   z-index: 60;
+  animation: modal-open 0.625s ease-in-out;
+  animation-fill-mode: forwards;
 }
 
 .Modal__header {
   font-size: 3rem;
   color: var(--color-primary);
   margin-left: 1rem;
-  margin-top: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .Modal__close {
@@ -42,7 +43,67 @@
   fill: var(--color-primary);
   width: 2rem;
   height: 2rem;
-  transition: all 0.3s ease-in-out;
+}
+
+.ModalLoadedCities__Exit {
+  animation: back-drop-close 0.625s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.Modal__Exit {
+  animation: modal-close 0.5 ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+/* ANIMATION */
+@keyframes modal-open {
+  0% {
+    opacity: 0;
+  }
+
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-close {
+  0% {
+    opacity: 1;
+  }
+
+  20% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes back-drop-open {
+  0% {
+    transform: scaleY(0);
+  }
+  20% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes back-drop-close {
+  0% {
+    transform: scaleY(1);
+  }
+  20% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0);
+  }
 }
 
 @media screen and (min-width: 1100px) {

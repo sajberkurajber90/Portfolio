@@ -1,0 +1,87 @@
+.Chart5DaysMobile {
+  width: 100%;
+  height: 21rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.Chart5DaysMobile__header {
+  height: 4rem;
+  margin: 0rem 1rem 0;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Chart5DaysMobile__Chart {
+  position: relative;
+  flex-grow: 1;
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Chart5DaysMobile__toolTip {
+  position: absolute;
+  left: 0rem;
+  top: -0.5rem;
+  background-color: #5d536c;
+  color: pink;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.Chart5DaysMobile__navigation {
+  font-size: 1.5rem;
+  width: 5rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background-color: #5d536c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Chart5DaysMobile__error {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+
+/* ANIMATION */
+.Chart5DaysMobile__Enter {
+  animation: chart-mobile-enter 0.5s linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes chart-mobile-enter {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.Chart5DaysMobile__Exit {
+  animation: chart-mobile-exit 0.5s linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes chart-mobile-exit {
+  0% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}

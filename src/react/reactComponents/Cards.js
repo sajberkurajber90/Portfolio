@@ -14,8 +14,10 @@ export default function Cards(props) {
   var errorLocation = props.errorLocation;
   var onClickLocation = props.onClickLocation;
   var convertTempUnit = props.convertTempUnit;
+  var forecast = props.forecast;
   // dispatch
   var dispatch = useDispatch();
+  // unmount guard
   var isMountedRef = useRef(null);
 
   // clear error arr
@@ -37,8 +39,8 @@ export default function Cards(props) {
   var results = void 0;
   currentUrl.length === 0 ? results = null : results = currentUrl.map(function (item, index) {
     return React.createElement(Card, {
-      id: 'Card-' + item,
-      key: index,
+      id: item,
+      key: item,
       city: item,
       delay: index,
       currentWeather: currentWeather,
@@ -46,7 +48,8 @@ export default function Cards(props) {
       currentUrl: currentUrl,
       width: width,
       onClickLocation: onClickLocation,
-      convertTempUnit: convertTempUnit
+      convertTempUnit: convertTempUnit,
+      forecast: forecast
     });
   });
 

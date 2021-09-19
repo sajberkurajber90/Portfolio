@@ -10,12 +10,28 @@ import FormResults from '../reactComponents/FormResults';
 import DashBoard from '../reactComponents/DashBoard';
 import ModalLoadedCities from '../reactComponents/ModalLoadedCities';
 import InputToggleBtn from '../reactComponents/InputToggleBtn';
+import isContentSame from '../../helper/isContentSame';
+
+var generateOrdinalIndicator = function generateOrdinalIndicator(date) {
+  var extractNumber = +date.split(' ')[1];
+  if (extractNumber === 1) return 'st';
+  if (extractNumber === 2) return 'nd';
+  if (extractNumber === 3) return 'rd';
+  if (extractNumber > 3) return 'th';
+};
 
 var Results = function Results() {
   var today = new Date().toLocaleDateString('en-us', {
     day: 'numeric',
     month: 'long'
   });
+
+  var todayJsx = React.createElement(
+    'span',
+    null,
+    generateOrdinalIndicator(today)
+  );
+
   // dispatch and history fun
   var dispatch = useDispatch();
   var historyHook = useHistory();
@@ -35,9 +51,6 @@ var Results = function Results() {
       onClickLocation = _useSelector.onClickLocation,
       convertTempUnit = _useSelector.convertTempUnit,
       forecast = _useSelector.forecast;
-
-  // console.log('CONVERT TEMP: ', convertTempUnit);
-
   // on refreash
 
 
@@ -49,27 +62,29 @@ var Results = function Results() {
   urlData = urlData.split('+').filter(function (element) {
     return !errorLocation.includes(element);
   });
-  // console.log('URLDATA: ', urlData);
   var urlLen = urlData.length; // url form the url bar
   var urlArr = [].concat(_toConsumableArray(new Set(urlData))); // unique values w
   var isDuplicate = urlArr.length !== urlLen; // on duplicates replace history
-
+  var same = isContentSame(urlData, currentUrl, errorLocation); // check content of the url and store url arr
   // update url
   useEffect(function () {
-    if (replaceHistory || isDuplicate) {
-      // console.log('REPLACING HISTORY');
-      historyHook.replace(isDuplicate ? '/Home/' + urlArr.join('+') : '/Home/' + currentUrl.join('+'));
-    }
-    if (!replaceHistory && inputSource) {
-      // console.log('PUSHING HISTORY');
-      historyHook.push('/Home/' + currentUrl.join('+'));
+    if (!same) {
+      if (replaceHistory || isDuplicate) {
+        console.log('REPLACING HISTORY');
+        historyHook.replace(isDuplicate ? '/Home/' + urlArr.join('+') : '/Home/' + currentUrl.join('+'));
+        dispatch({ type: 'RESET' });
+      }
+      if (!replaceHistory && inputSource) {
+        console.log('PUSHING HISTORY');
+        historyHook.push('/Home/' + currentUrl.join('+'));
+      }
     }
   }, [currentUrl.join('+'), isDuplicate]);
 
   // on manual url update and refreash
   useEffect(function () {
-    if (!inputSource) {
-      // console.log('UPDATING CURRENT URL');
+    if (!inputSource && !replaceHistory && !same) {
+      console.log('UPDATING CURRENT URL');
 
       dispatch({
         type: 'ALL_INPUTS',
@@ -78,6 +93,14 @@ var Results = function Results() {
       });
     }
   }, [urlArr.join('+'), inputSource]);
+
+  // on manual url change unclick the clicked card - if it doesnt' exist in url
+  useEffect(function () {
+    if (onClickLocation !== '') {
+      var isIncludedInURL = urlArr.includes(onClickLocation);
+      isIncludedInURL ? null : dispatch({ type: 'ON_CARD_CLICK', payload: '' });
+    }
+  }, [urlArr.join('+')]);
 
   return React.createElement(
     'section',
@@ -90,15 +113,16 @@ var Results = function Results() {
     React.createElement(
       'h1',
       { className: 'Results__header' },
-      'Current Weather for ',
-      today
+      'Weather for ',
+      today,
+      todayJsx
     ),
-    width > 1100 && React.createElement(FormResults, {
+    width >= 1100 && React.createElement(FormResults, {
       input: input,
       currentWeather: currentWeather,
       width: width
     }),
-    width <= 1100 && React.createElement(
+    width < 1100 && React.createElement(
       'div',
       { className: 'Results__toggle' },
       React.createElement(
@@ -106,7 +130,7 @@ var Results = function Results() {
         null,
         'Swipe a card to left to remove it'
       ),
-      React.createElement(InputToggleBtn, null)
+      React.createElement(InputToggleBtn, { width: width })
     ),
     React.createElement(
       DashBoard,
@@ -117,15 +141,18 @@ var Results = function Results() {
         currentUrl: currentUrl,
         errorLocation: errorLocation,
         onClickLocation: onClickLocation,
-        convertTempUnit: convertTempUnit
-      }),
-      React.createElement(Chart5Days, {
-        onClickLocation: onClickLocation,
         convertTempUnit: convertTempUnit,
         forecast: forecast
-      })
+      }),
+      width >= 1100 ? React.createElement(Chart5Days, {
+        onClickLocation: onClickLocation,
+        convertTempUnit: convertTempUnit,
+        forecast: forecast,
+        currentUrl: currentUrl,
+        width: width
+      }) : null
     ),
-    width <= 1100 && React.createElement(FormResults, {
+    width < 1100 && React.createElement(FormResults, {
       input: input,
       currentWeather: currentWeather,
       width: width

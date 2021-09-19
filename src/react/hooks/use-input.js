@@ -8,7 +8,7 @@ const initilaValue = {
 };
 
 // regex def
-let regx = /^[a-zA-Z\s]*$/;
+let regx = /^[a-zA-ZäöüßÄÖÜ\s]*$/;
 
 // reducer
 const inputReducer = function (state, action) {

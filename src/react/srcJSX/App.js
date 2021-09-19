@@ -7,7 +7,6 @@ import Home from './pages/Home';
 import Results from './pages/Results';
 import NotFound from './pages/NotFound';
 import WindowSize from './reactComponents/WindowSize';
-import KeyPress from './reactComponents/KeyPress';
 
 function App() {
   return (
@@ -29,7 +28,6 @@ function App() {
         </Route>
       </Switch>
       <WindowSize />
-      <KeyPress />
     </Fragment>
   );
 }

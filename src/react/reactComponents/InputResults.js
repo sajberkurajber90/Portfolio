@@ -30,6 +30,7 @@ var InputResults = function InputResults(props) {
   var style = void 0;
   // esc key handler-> blur()
   var onEscHandler = function onEscHandler(event) {
+    console.log(event.key);
     event.key === 'Escape' ? inputRef.current.blur() : '';
   };
 

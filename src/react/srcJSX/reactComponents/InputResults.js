@@ -28,6 +28,7 @@ const InputResults = function (props) {
   let style;
   // esc key handler-> blur()
   const onEscHandler = function (event) {
+    console.log(event.key);
     event.key === 'Escape' ? inputRef.current.blur() : '';
   };
 
