@@ -1,12 +1,14 @@
 class View {
   constructor() {
-    this._data = "";
+    this._data = '';
   }
 
   render(data) {
     this._data = data;
   }
-  update() {}
+  update(data) {
+    this.data;
+  }
 }
 
 export default View;

@@ -630,8 +630,3 @@ btnGame.addEventListener('click', e => {
 // ############################################################
 // init the event listeners
 // ############################################################
-viewNavigation.addHandlerNavBar();
-// viewNavigation.addHandlerOnPageLoad();
-viewNavigation.addHandlerCloseModal();
-viewNavigation.addHandlerMobileNav();
-viewNavigation.addHandlerGrid();

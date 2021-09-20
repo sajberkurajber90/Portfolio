@@ -9,10 +9,16 @@ class ViewNavigation extends View {
     this._gameSection = document.getElementById('#game');
     this._weatherSection = document.getElementById('root');
     this._grid = document.querySelector('.grid');
+    // init handlers - for navigation / modal purposes
+    this._addHandlerOnPageLoad();
+    this._addHandlerCloseModal();
+    this._addHandlerNavBar();
+    this._addHandlerGrid();
+    this._addHandlerMobileNav();
   }
 
   // navigation bar event delegation
-  addHandlerNavBar() {
+  _addHandlerNavBar() {
     const handler = function (e) {
       console.log(e.target.textContent);
       if (e.target.textContent.toLowerCase() === 'lonely pong 19') {
@@ -35,7 +41,7 @@ class ViewNavigation extends View {
   }
 
   // trigger Modal on page load
-  addHandlerOnPageLoad() {
+  _addHandlerOnPageLoad() {
     document.addEventListener('DOMContentLoaded', () => {
       this._cookies.classList.replace('hidden', 'backdrop__animation--in');
       this._cookies.children[0].classList.add('cookies--animation--in');
@@ -43,7 +49,7 @@ class ViewNavigation extends View {
   }
 
   // close Cokies modal
-  addHandlerCloseModal() {
+  _addHandlerCloseModal() {
     const button = this._cookies.querySelector('button');
     const handler = function (e) {
       e.preventDefault();
@@ -67,7 +73,7 @@ class ViewNavigation extends View {
   }
 
   // Mobile: toggle dropdown menu
-  addHandlerMobileNav() {
+  _addHandlerMobileNav() {
     const handler = function () {
       if (this._navList.classList.contains('collapsible__extanded')) {
         this._navList.classList.replace(
@@ -91,7 +97,7 @@ class ViewNavigation extends View {
   }
 
   // Grid click events scroll to
-  addHandlerGrid() {
+  _addHandlerGrid() {
     const handler = function (e) {
       const clickGame = e.target.closest('.grid__game-card');
       const gridHeader = e.target.closest('.grid__subject-card');

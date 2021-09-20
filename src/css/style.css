@@ -403,7 +403,6 @@ p {
   padding-top: 10rem;
   margin-bottom: 2rem;
   text-align: center;
-  /* color: white; */
 }
 
 .section-game__display {
@@ -430,7 +429,7 @@ p {
     width: 20rem;
     height: 5rem;
     margin: auto;
-    margin-top: 2rem;
+    margin-top: 3rem;
     margin-bottom: auto;
     border-radius: 1rem;
     opacity: 1;
@@ -475,7 +474,7 @@ p {
   .section-game__heading {
     font-size: 4rem;
     margin-top: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     padding-top: 0;
   }
   .section-game__display {
@@ -616,8 +615,8 @@ p {
   }
 
   .modal--color {
-    background-color: #b7b7bf;
-    color: #1c1970;
+    background-color: var(--color-accent);
+    color: var(--color-primary);
   }
 
   .modal__animation--in {
@@ -658,7 +657,7 @@ p {
 
   .modal__header {
     margin-left: 2rem;
-    margin-top: 7rem;
+    margin-top: 3rem;
     margin-bottom: 0rem;
   }
 
@@ -671,8 +670,19 @@ p {
     margin: auto;
     margin-top: 3rem;
     margin-bottom: 3rem;
-    border: 0.2rem solid rgba(0, 0, 0, 0.5);
     border-radius: 1.5rem;
+  }
+
+  .modal__button:hover {
+    transition: all 0.2s ease-in;
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+  }
+
+  .modal__button:not(:hover) {
+    transition: all 0.2s ease-in;
+    color: var(--color-secondary);
+    background-color: var(--color-primary);
   }
 
   .modal h3 {
@@ -680,39 +690,14 @@ p {
     font-size: 2rem;
   }
 
-  .modal__button:hover {
-    color: #1c1970;
-    background-color: #772263;
-  }
-
-  .modal__buton--color {
-    color: #b7b7bf;
-    background-color: #772263;
-  }
-
   .modal__item {
     margin-bottom: 1rem;
+    color: white;
   }
 
   .modal > div {
     display: flex;
     justify-content: space-between;
-  }
-
-  .modal__svg {
-    height: 3rem;
-    width: 3rem;
-    margin-top: 2rem;
-    margin-right: 2rem;
-  }
-
-  .modal__svg--color {
-    color: #1c1970;
-    opacity: 0.8;
-  }
-
-  .modal svg:hover {
-    opacity: 1;
   }
 }
 
