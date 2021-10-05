@@ -1,14 +1,12 @@
-import View from './view.js';
-
-class ViewNavigation extends View {
+class ViewNavigation {
   constructor() {
-    super();
     this._navList = document.querySelector('.nav__list');
     this._cookies = document.getElementById('modal-cookies');
     this._toToggle = document.querySelector('.icon-1');
     this._gameSection = document.getElementById('#game');
     this._weatherSection = document.getElementById('root');
     this._grid = document.querySelector('.grid');
+    this._aboutSection = document.querySelector('.section-about');
     // init handlers - for navigation / modal purposes
     this._addHandlerOnPageLoad();
     this._addHandlerCloseModal();
@@ -26,6 +24,9 @@ class ViewNavigation extends View {
       }
       if (e.target.textContent.toLowerCase() === 'weatherapp') {
         this._weatherSection.scrollIntoView({ behavior: 'smooth' });
+      }
+      if (e.target.textContent.toLowerCase() === 'about') {
+        this._aboutSection.scrollIntoView({ behavior: 'smooth' });
       }
 
       // colaspse back in mobile on click

@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <script defer src="./js/controller.js"></script>
+    <script defer src="./js/controllerv2.js"></script>
   </head>
   <body>
     <!-- Modal Cookies -->
@@ -77,7 +77,7 @@
         <ul class="list nav__list collapsible__content list--inline">
           <li class="nav__item">Lonely Pong 19</li>
           <li class="nav__item">WeatherApp</li>
-          <li class="nav__item">Kontakt</li>
+          <li class="nav__item">About</li>
         </ul>
       </nav>
       <!-- Home -->
@@ -143,12 +143,65 @@
     </section>
     <!-- REACT STARTS HERE -->
     <div id="root"></div>
-    <!-- About Me -->
+    <!-- About -->
+    <section class="section-about">
+      <div
+        class="
+          section-about__language
+          section-about__language--flex
+          section-about__language--color
+        "
+      >
+        <div
+          class="section-about__language--item section-about__language--clicked"
+          data-lang="EN"
+        >
+          EN
+        </div>
+        <div class="section-about__language--item" data-lang="DE">DE</div>
+      </div>
+      <div class="section-about__cards"></div>
+      <div class="section-about__pointers">
+        <div class="section-about__box" id="box-left">
+          <div class="section-about__arrow section-about__arrow--left"></div>
+        </div>
+        <div class="section-about__box" id="box-right">
+          <div class="section-about__arrow section-about__arrow--right"></div>
+        </div>
+      </div>
+      <footer
+        class="
+          section-about-footer
+          sectiom-about-footer--primary sectiom-about-footer--clip
+        "
+      >
+        <div class="icon__contact icon__contact--flex">
+          <a
+            class="a__icon"
+            href="https://linkedin.com/in/tibor-bezdan"
+            target="_blank"
+          >
+            <svg class="icon__linkedin icon--back icon--about">
+              <use xlink:href="./icons/linkedin.svg#in"></use>
+            </svg>
+          </a>
+          <a
+            class="a__icon"
+            href="https://github.com/sajberkurajber90/Portfolio"
+            target="_blank"
+          >
+            <svg class="icon__git icon--back icon--about">
+              <use xlink:href="./icons/git.svg#git"></use>
+            </svg>
+          </a>
+        </div>
+      </footer>
+    </section>
     <script
-      src="https://unpkg.com/react@17/umd/react.development.js"
+      src="https://unpkg.com/react@17/umd/react.production.min.js"
       crossorigin
     ></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="./react/index.js"></script>
   </body>
 </html>
