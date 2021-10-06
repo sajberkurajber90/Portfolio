@@ -18,12 +18,9 @@ const DayCard = function (props) {
     }, 500);
 
     return () => {
-      console.log('CLEAR - CLIKC');
       clearTimeout(clear);
     };
   }, [onClickLocation]);
-
-  console.log('DISABLE CLICK: ', disableClick);
 
   const styleObj = {
     backgroundColor: clickedDay === day ? '#5d536c' : '#685d79',

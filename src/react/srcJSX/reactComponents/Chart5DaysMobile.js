@@ -70,7 +70,6 @@ const Chart5DaysMobile = function (props) {
   const onTapDayNextIndexHandler = function () {
     days
       ? setTappedDayIndex(prev => {
-          console.log(prev);
           return tappedDayIndex < days.length - 1 ? prev + 1 : prev;
         })
       : null;
@@ -87,7 +86,6 @@ const Chart5DaysMobile = function (props) {
   useEffect(() => {
     isMountedRef.current = true;
     if (isFetched || errorHttp) {
-      console.log('Loading Chart or Error');
     } else {
       const locationUrl = get5DaysForecast(tappedCity);
       sendRequest(locationUrl, dataTransform, isMountedRef);

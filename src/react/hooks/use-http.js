@@ -4,7 +4,6 @@ const useHttp = function () {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const errorHandler = useCallback(function () {
-    console.log('reset error');
     setError(null);
   }, []);
 
@@ -15,7 +14,7 @@ const useHttp = function () {
   ) {
     try {
       setIsLoading(true);
-      console.log('START FETCHING: ', url);
+
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Ups - status:${response.status}`);

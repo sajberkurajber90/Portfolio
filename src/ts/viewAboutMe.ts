@@ -29,7 +29,7 @@ class ViewAboutMe {
   private _selectedBtn: number = 0; // active btn
   private _data: Array<DataObj> = []; // data from the state
   private _stopBtn = false; // avoid clicking spree
-  private _clearIntervalID: number = setInterval(
+  private _clearIntervalID = setInterval(
     this._intervalHandler.bind(this),
     10000
   ); // inteval id

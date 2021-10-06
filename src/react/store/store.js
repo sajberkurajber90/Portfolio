@@ -1,5 +1,4 @@
 import { createStore } from 'redux';
-console.log('INIT STORE');
 const initState = {
   input: '',
   winWidth: window.innerWidth,

@@ -14,7 +14,6 @@ export const desktopDataPrep = function (plotData, clickedDay) {
       while (tempArr.length < 8) {
         const day = plotData.days[startIndex + iter];
         tempArr = tempArr.concat(plotData[day]);
-        // console.log(iter, ' day: ', day);
         iter++;
       }
       for (let i = 0; i < 8; i++) {
@@ -29,7 +28,7 @@ export const desktopDataPrep = function (plotData, clickedDay) {
       while (tempArr.length < 8) {
         const day = plotData.days[startIndex - iter];
         tempArr = plotData[day].concat(tempArr);
-        // console.log(iter, 'day: ', day);
+
         iter++;
       }
       for (let i = tempArr.length - 8; i < tempArr.length; i++) {

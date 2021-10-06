@@ -70,12 +70,10 @@ var Results = function Results() {
   useEffect(function () {
     if (!same) {
       if (replaceHistory || isDuplicate) {
-        console.log('REPLACING HISTORY');
         historyHook.replace(isDuplicate ? '/Home/' + urlArr.join('+') : '/Home/' + currentUrl.join('+'));
         dispatch({ type: 'RESET' });
       }
       if (!replaceHistory && inputSource) {
-        console.log('PUSHING HISTORY');
         historyHook.push('/Home/' + currentUrl.join('+'));
       }
     }
@@ -84,8 +82,6 @@ var Results = function Results() {
   // on manual url update and refreash
   useEffect(function () {
     if (!inputSource && !replaceHistory && !same) {
-      console.log('UPDATING CURRENT URL');
-
       dispatch({
         type: 'ALL_INPUTS',
         payload: urlArr,

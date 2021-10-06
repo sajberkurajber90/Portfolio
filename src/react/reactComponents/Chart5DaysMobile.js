@@ -87,7 +87,6 @@ var Chart5DaysMobile = function Chart5DaysMobile(props) {
   // tapping on a forecast day
   var onTapDayNextIndexHandler = function onTapDayNextIndexHandler() {
     days ? setTappedDayIndex(function (prev) {
-      console.log(prev);
       return tappedDayIndex < days.length - 1 ? prev + 1 : prev;
     }) : null;
   };
@@ -100,9 +99,7 @@ var Chart5DaysMobile = function Chart5DaysMobile(props) {
   // fetch
   useEffect(function () {
     isMountedRef.current = true;
-    if (isFetched || errorHttp) {
-      console.log('Loading Chart or Error');
-    } else {
+    if (isFetched || errorHttp) {} else {
       var locationUrl = get5DaysForecast(tappedCity);
       sendRequest(locationUrl, dataTransform, isMountedRef);
     }

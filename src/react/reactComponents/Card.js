@@ -137,7 +137,6 @@ var Card = function Card(props) {
       city: city
     }) : '';
   };
-  // console.log('CURRENT WEATHER: ', currentweather);
 
   var _ref = currentweather.length ? currentweather.filter(function (element) {
     return element.name.includes(city);
@@ -151,9 +150,7 @@ var Card = function Card(props) {
     isMountedRef.current = true;
     var clear = null;
     // guard for refetching if data exists or isLoading
-    if (data || isLoading || isError) {
-      console.log('data loaded or is loading or isError');
-    } else {
+    if (data || isLoading || isError) {} else {
       var locationUrl = getCurrentWeather(city);
 
       clear = setTimeout(sendRequest.bind(null, locationUrl, dataTransform, isMountedRef), 100 * delay);
@@ -292,7 +289,7 @@ var Card = function Card(props) {
         timeout: animationTiming,
         classNames: transitionStyles,
         onExited: function onExited() {
-          console.log('ANIMATION FINISHED');
+
           updateHistoryOnCardRemove();
         }
       },
@@ -407,7 +404,6 @@ var Card = function Card(props) {
           timeout: animationTiming,
           classNames: transitionStyles,
           onExited: function onExited() {
-            console.log('ANIMATION FINISHED');
             updateHistoryOnCardRemove();
           }
         },

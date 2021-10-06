@@ -116,7 +116,6 @@ const Card = function (props) {
         })
       : '';
   };
-  // console.log('CURRENT WEATHER: ', currentweather);
   const [data] = currentweather.length
     ? currentweather.filter(element => {
         return element.name.includes(city);
@@ -128,7 +127,6 @@ const Card = function (props) {
     let clear = null;
     // guard for refetching if data exists or isLoading
     if (data || isLoading || isError) {
-      console.log('data loaded or is loading or isError');
     } else {
       const locationUrl = getCurrentWeather(city);
 
@@ -277,7 +275,7 @@ const Card = function (props) {
         timeout={animationTiming}
         classNames={transitionStyles}
         onExited={() => {
-          console.log('ANIMATION FINISHED');
+          
           updateHistoryOnCardRemove();
         }}
       >
@@ -382,7 +380,6 @@ const Card = function (props) {
         timeout={animationTiming}
         classNames={transitionStyles}
         onExited={() => {
-          console.log('ANIMATION FINISHED');
           updateHistoryOnCardRemove();
         }}
       >

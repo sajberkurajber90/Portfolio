@@ -254,7 +254,6 @@ var LineChart = function LineChart(props) {
       // stop animation after first render
       if (!lineChartRef.current || !renderCount.current || unitTrack.isUnitChange) {
         cleanUp['init-animation'] = setTimeout(function () {
-          console.log('NO DATA FROM REF or RESET- STOP ANIMATION');
           defaults.animation.duration = 0;
           renderCount.current++;
           unitTrack.isUnitChange = false;
@@ -262,9 +261,7 @@ var LineChart = function LineChart(props) {
       }
       // transition by changing days
       if (lineChartRef.current && !unitTrack.isUnitChange && renderCount.current) {
-        console.log('DATA IS HERE - READY FOR TRANSITION');
         defaults.animation.duration = 200;
-        console.log('ANIMATION-DURATION: ', defaults.animation.duration);
 
         var _desktopDataPrep = desktopDataPrep(plotData, clickedDay),
             _desktopDataPrep2 = _slicedToArray(_desktopDataPrep, 2),
@@ -290,7 +287,6 @@ var LineChart = function LineChart(props) {
 
   useEffect(function () {
     return function () {
-      console.log('CLEAN UP');
       if (Object.keys(cleanUp).length) {
         for (var key in cleanUp) {
           clearTimeout(cleanUp[key]);

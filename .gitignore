@@ -3,3 +3,7 @@ node_modules
 .cache
 dist
 .prettierrc
+.firebase
+.firebaserc
+firebase.json
+dev

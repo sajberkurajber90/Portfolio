@@ -65,7 +65,6 @@ var BarChart = function BarChart(props) {
     }]
   } : false;
 
-  console.log(plotData);
   var chartOtions = {
     responsive: true,
     events: ['click'],

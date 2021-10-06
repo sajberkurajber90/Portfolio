@@ -18,7 +18,6 @@ class ViewNavigation {
   // navigation bar event delegation
   _addHandlerNavBar() {
     const handler = function (e) {
-      console.log(e.target.textContent);
       if (e.target.textContent.toLowerCase() === 'lonely pong 19') {
         this._gameSection.scrollIntoView({ behavior: 'smooth' });
       }

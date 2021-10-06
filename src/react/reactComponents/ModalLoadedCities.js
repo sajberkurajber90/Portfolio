@@ -72,7 +72,6 @@ var ModalLoadedCities = function ModalLoadedCities(props) {
       timeout: animationTiming,
       classNames: transitionStyles,
       onExited: function onExited() {
-        console.log('ANIMATION FINISHED - MODAL');
         dispatch({ type: 'MODAL', payload: true });
       }
     },

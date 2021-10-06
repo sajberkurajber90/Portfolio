@@ -464,7 +464,6 @@ const game = function (disp, lhBar, rhBar, hitBall) {
     gameProps.blockPaddle = true;
     setTimeout(() => {
       gameProps.blockPaddle = false;
-      console.log('Unblock');
     }, 400);
   }
 

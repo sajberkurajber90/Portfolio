@@ -59,7 +59,6 @@ const Results = function () {
   useEffect(() => {
     if (!same) {
       if (replaceHistory || isDuplicate) {
-        console.log('REPLACING HISTORY');
         historyHook.replace(
           isDuplicate
             ? `/Home/${urlArr.join('+')}`
@@ -68,7 +67,6 @@ const Results = function () {
         dispatch({ type: 'RESET' });
       }
       if (!replaceHistory && inputSource) {
-        console.log('PUSHING HISTORY');
         historyHook.push(`/Home/${currentUrl.join('+')}`);
       }
     }
@@ -77,8 +75,6 @@ const Results = function () {
   // on manual url update and refreash
   useEffect(() => {
     if (!inputSource && !replaceHistory && !same) {
-      console.log('UPDATING CURRENT URL');
-
       dispatch({
         type: 'ALL_INPUTS',
         payload: urlArr,

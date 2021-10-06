@@ -216,10 +216,8 @@ const gameHandler = function (
   // block paddles for 0.4s
   if (!hitBall.state && !model.state.blockPaddle) {
     model.state.blockPaddle = true;
-    // console.log('Block paddles');
     setTimeout(() => {
       model.state.blockPaddle = false;
-      // console.log('Unblock');
     }, 400);
   }
 

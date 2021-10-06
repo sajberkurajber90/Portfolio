@@ -219,7 +219,6 @@ const LineChart = function (props) {
         unitTrack.isUnitChange
       ) {
         cleanUp['init-animation'] = setTimeout(() => {
-          console.log('NO DATA FROM REF or RESET- STOP ANIMATION');
           defaults.animation.duration = 0;
           renderCount.current++;
           unitTrack.isUnitChange = false;
@@ -231,9 +230,8 @@ const LineChart = function (props) {
         !unitTrack.isUnitChange &&
         renderCount.current
       ) {
-        console.log('DATA IS HERE - READY FOR TRANSITION');
         defaults.animation.duration = 200;
-        console.log('ANIMATION-DURATION: ', defaults.animation.duration);
+
         const [timeStamp, temperatureStamp] = desktopDataPrep(
           plotData,
           clickedDay
@@ -259,7 +257,6 @@ const LineChart = function (props) {
 
   useEffect(() => {
     return () => {
-      console.log('CLEAN UP');
       if (Object.keys(cleanUp).length) {
         for (const key in cleanUp) {
           clearTimeout(cleanUp[key]);

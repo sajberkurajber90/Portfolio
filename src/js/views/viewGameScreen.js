@@ -67,7 +67,6 @@ class ViewGameScreen {
 
   _observerHandler(elements) {
     const [element] = elements;
-    console.log(element);
     if (element.isIntersecting) {
       this._gameHeading.classList.add('section-game__heading--in');
       this._observer.disconnect();
