@@ -7,6 +7,9 @@ class ViewNavigation {
     this._weatherSection = document.getElementById('root');
     this._grid = document.querySelector('.grid');
     this._aboutSection = document.querySelector('.section-about');
+    this._cards = this._grid.querySelectorAll('.grid__card--color');
+    // remove loading spiner on img's load
+    this._dispImg(this._cards);
     // init handlers - for navigation / modal purposes
     this._addHandlerOnPageLoad();
     this._addHandlerCloseModal();
@@ -112,6 +115,39 @@ class ViewNavigation {
     };
 
     this._grid.addEventListener('click', handler.bind(this));
+  }
+  // on img load promise
+  _onImgLoad(element) {
+    return new Promise((resolve, _) => {
+      if (element.complete) {
+        // already loaded before script
+        resolve();
+      } else {
+        // still loading - wait on it
+        element.onload = () => {
+          resolve();
+        };
+      }
+    });
+  }
+  // remove spinner
+  async _dispImg(elements) {
+    const elementsArr = Array.from(elements);
+    const promises = elementsArr.map(element => {
+      const img = element.querySelector('img');
+      return this._onImgLoad(img);
+    });
+    await Promise.all(promises);
+    // after resolvig
+    elementsArr.forEach(element => {
+      element
+        .querySelector('.grid__load')
+        .classList.remove('loading-animation');
+      element.classList.remove('grid__card--flex');
+      element.style = 'pointer-events: auto;';
+      element.querySelector('.grid__content').style = 'opacity:1;';
+      element.querySelector('img').style = 'opacity:1';
+    });
   }
 }
 

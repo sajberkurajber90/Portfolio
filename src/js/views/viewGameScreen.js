@@ -138,9 +138,11 @@ class ViewGameScreen {
     this._btnGame.addEventListener('click', event => {
       event.preventDefault();
       // make full screen and reinit disp prop
+      console.log('width', window.screen.width, 'height', window.screen.height);
+      console.log(window.outerHeight, window.outerWidth);
       if (
-        window.screen.width !== window.outerWidth &&
-        window.screen.height !== window.outerHeight
+        Math.abs(window.screen.width - window.outerWidth) > 100 &&
+        Math.abs(window.screen.height - window.outerHeight) > 100
       ) {
         alert('Please maximize the window and try again');
         return;

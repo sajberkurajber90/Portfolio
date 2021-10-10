@@ -13,7 +13,7 @@
   padding-left: 2rem;
   width: 100%;
   color: white;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   font-size: 4rem;
 }
 
@@ -36,16 +36,17 @@
   color: var(--color-primary);
 }
 
-@media screen and (min-width: 1100) {
+@media screen and (min-width: 1100px) {
   .Results {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
   }
   .Results__header {
-    margin-top: 0;
-    margin-bottom: 5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
     padding-top: 2rem;
     font-size: 5rem;
+    text-align: center;
   }
 }

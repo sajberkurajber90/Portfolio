@@ -374,8 +374,6 @@ const onStrockeKeyHandler = function (
   }
 };
 
-// on resize stop the game
-
 // change language handler
 const changeLanguageHandler = function (lang) {
   // update state
