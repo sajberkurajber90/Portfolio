@@ -37,7 +37,7 @@ export const state = {
       descriptionEn:
         "Hi, I am Engeenier with intention to become a web developer. Portfolio page was writen in vanilla JS, TS and React - more details on Github. For any question don't hesitate to contact me over LinkedIn.",
       descriptionDe:
-        'Hallo, ich bin Ineginieur mit der Absicht, der Werbentwickler zu werden. Die Porfolioseite wurde mit Hilfe von Vanilla JS,TS und React entworfen - mehr Details auf Github. Bei Fragen, melden Sie sich über LinkedIn. ',
+        'Hallo, ich bin Ingenieur mit der Absicht, der Webentwickler zu werden. Die Portfolioseite wurde mit Hilfe von Vanilla JS,TS und React entworfen - mehr Details auf Github. Bei Fragen, melden Sie sich über LinkedIn. ',
     },
   ],
 };
